@@ -49,7 +49,7 @@ jobs:
             git pull origin staging
             export NVM_DIR=~/.nvm
             source ~/.nvm/nvm.sh 
-            npm install --production
+            npm install
             npm run build:staging
             pm2 restart backend-stags
             pm2 save

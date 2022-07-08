@@ -1,8 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
   IsEmail,
-  IsEmpty,
   IsNotEmpty,
+  IsOptional,
   IsPhoneNumber,
   Matches,
   MinLength,
@@ -13,17 +13,17 @@ export class TempsAuthDto {
   })
   @IsNotEmpty()
   fullname: string;
-  @IsEmpty()
+  @IsOptional()
   @ApiProperty({
     example: 'e.g. banjarmasin',
   })
   born_city: string;
-  @IsEmpty()
+  @IsOptional()
   @ApiProperty({
     example: 'e.g. 0000-00-00 00:00:00',
   })
   born_date: Date;
-  @IsEmpty()
+  @IsOptional()
   @ApiProperty({ enum: ['laki-laki', 'perempuan'] })
   sex_category_title: string;
   @IsPhoneNumber()

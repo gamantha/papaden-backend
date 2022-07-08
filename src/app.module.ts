@@ -4,11 +4,16 @@ import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 const ENV = process.env.NODE_ENV;
 
 @Module({
   imports: [
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '/', 'docs/api'),
+    }),
     ConfigModule.forRoot({
       envFilePath: !ENV ? '.env' : `.${ENV}.env`,
     }),

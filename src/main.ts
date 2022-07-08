@@ -18,8 +18,8 @@ async function bootstrap() {
     .addTag('backend')
     .build();
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('docs/api', app, document);
   app.enableCors();
-  await app.listen(process.env.HOST_PORT, '0.0.0.0');
+  SwaggerModule.setup('docs/api', app, document);
+  await app.listen(process.env.HOST_PORT);
 }
 bootstrap();

@@ -54,9 +54,6 @@ export class tempsAuth {
     this.password = await bcrypt.hash(this.password, 10);
     return this.password;
   }
-  async validatePassword(password: string): Promise<boolean> {
-    return bcrypt.compare(password, this.password);
-  }
 }
 
 @Entity('perms_auth')

@@ -1,7 +1,9 @@
 import { Controller, Get } from '@nestjs/common';
 import { AppService } from './app.service';
 
-@Controller()
+@Controller({
+  host: process.env.HOST_DOMAIN,
+})
 export class AppController {
   constructor(private readonly appService: AppService) {}
 

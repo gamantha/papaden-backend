@@ -11,6 +11,7 @@ async function bootstrap() {
       transform: true,
     }),
   );
+  app.enableCors();
   const config = new DocumentBuilder()
     .setTitle('papaden')
     .setDescription('The Papaden API library')
@@ -18,8 +19,7 @@ async function bootstrap() {
     .addTag('backend')
     .build();
   const document = SwaggerModule.createDocument(app, config);
-  app.enableCors();
-  SwaggerModule.setup('docs/api', app, document);
-  await app.listen(process.env.HOST_PORT);
+  SwaggerModule.setup('docs', app, document);
+  await app.listen(process.env.HOST_PORT, '0.0.0.0');
 }
 bootstrap();

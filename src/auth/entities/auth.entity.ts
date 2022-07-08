@@ -19,12 +19,10 @@ export class tempsAuth {
     nullable: true,
   })
   born_city: string;
-  @Column('timestamp')
-  @Column({
+  @Column('timestamp', {
     nullable: true,
   })
   born_date: Date;
-  @Column()
   @Column({
     nullable: true,
   })
@@ -35,14 +33,14 @@ export class tempsAuth {
   email: string;
   @Column()
   password: string;
-  @Column('boolean', { default: true })
-  status = true;
+  @Column('boolean', { default: false })
+  status = false;
   @CreateDateColumn({ type: 'datetime' })
   @Column('datetime', {
     nullable: true,
     name: 'created_on',
   })
-  ccreated_on: Date;
+  created_on: Date;
   @UpdateDateColumn({ type: 'datetime' })
   @Column('datetime', {
     nullable: true,

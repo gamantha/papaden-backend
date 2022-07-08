@@ -18,8 +18,7 @@ async function bootstrap() {
     .addTag('backend')
     .build();
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('docs/api', app, document);
-  app.enableCors();
+  SwaggerModule.setup('api', app, document);
   await app.listen(process.env.HOST_PORT);
 }
 bootstrap();

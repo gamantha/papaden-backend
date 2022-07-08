@@ -27,7 +27,8 @@ export class AuthService {
       await this.tempsAuthRepository.save(tempsAuthDto);
       return {
         statusCode: HttpStatus.OK,
-        message: 'User Is Being Reviewed or Verification',
+        message:
+          'registration has been successful, please wait for the verification',
         data: signupTemp,
       };
     }

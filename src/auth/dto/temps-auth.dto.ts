@@ -13,9 +13,6 @@ export class TempsAuthDto {
   })
   @IsNotEmpty()
   fullname: string;
-  @ApiProperty({
-    example: 'e.g. banjarmasin',
-  })
   @IsEmpty()
   @ApiProperty({
     example: 'e.g. banjarmasin',
@@ -27,9 +24,7 @@ export class TempsAuthDto {
   })
   born_date: Date;
   @IsEmpty()
-  @ApiProperty({
-    example: 'e.g. laki-laki, id from sex category table',
-  })
+  @ApiProperty({ enum: ['laki-laki', 'perempuan'] })
   sex_category_title: string;
   @IsPhoneNumber()
   @ApiProperty({

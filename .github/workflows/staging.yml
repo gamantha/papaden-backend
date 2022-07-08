@@ -52,3 +52,4 @@ jobs:
             npm install --production
             npm run build:staging
             pm2 restart backend-stags
+            pm2 save

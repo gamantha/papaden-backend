@@ -52,3 +52,4 @@ jobs:
             npm install --production
             npm run build:production
             pm2 restart backend-prods
+            pm2 save

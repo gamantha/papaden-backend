@@ -4,6 +4,7 @@ import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
+import { DashboardModule } from './dashboard/dashboard.module';
 
 const ENV = process.env.NODE_ENV;
 
@@ -24,6 +25,7 @@ const ENV = process.env.NODE_ENV;
       logging: true,
     }),
     AuthModule,
+    DashboardModule,
   ],
   controllers: [AppController],
   providers: [AppService],

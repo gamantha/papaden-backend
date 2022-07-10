@@ -27,30 +27,25 @@ export class tempsAuth {
     nullable: true,
   })
   sex_category_title: string;
-  @Column()
+  @Column({ unique: true })
   phone: string;
-  @Column()
+  @Column({ unique: true })
   email: string;
   @Column()
   password: string;
   @Column('boolean', { default: false })
   status = false;
-  @CreateDateColumn({ type: 'datetime' })
-  @Column('datetime', {
-    nullable: true,
-    name: 'created_on',
-  })
+  @CreateDateColumn()
   created_on: Date;
-  @UpdateDateColumn({ type: 'datetime' })
-  @Column('datetime', {
-    nullable: true,
-    name: 'updated_on',
-  })
+  @UpdateDateColumn()
   updated_on: Date;
   @BeforeInsert()
   async hashPassword() {
     this.password = await bcrypt.hash(this.password, 10);
     return this.password;
+  }
+  async validatePassword(password: string): Promise<boolean> {
+    return bcrypt.compare(password, this.password);
   }
 }
 
@@ -59,4 +54,32 @@ export class permsAuth {
   @PrimaryGeneratedColumn()
   @Generated('uuid')
   id: string;
+  @Column()
+  fullname: string;
+  @Column()
+  born_city: string;
+  @Column('timestamp')
+  born_date: Date;
+  @Column()
+  sex_category_title: string;
+  @Column({ unique: true })
+  phone: string;
+  @Column({ unique: true })
+  email: string;
+  @Column()
+  password: string;
+  @Column()
+  status: boolean;
+  @CreateDateColumn()
+  created_on: Date;
+  @UpdateDateColumn()
+  updated_on: Date;
+  @BeforeInsert()
+  async hashPassword() {
+    this.password = await bcrypt.hash(this.password, 10);
+    return this.password;
+  }
+  async validatePassword(password: string): Promise<boolean> {
+    return bcrypt.compare(password, this.password);
+  }
 }

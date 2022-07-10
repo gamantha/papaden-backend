@@ -1,15 +1,21 @@
-import { HttpStatus, Injectable } from '@nestjs/common';
-import { TempsAuthDto } from './dto/temps-auth.dto';
+import { HttpStatus, Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { tempsAuth } from './entities/auth.entity';
 import { Repository } from 'typeorm';
+import { JwtService } from '@nestjs/jwt';
+import { permsAuth, tempsAuth } from './entities/auth.entity';
+import { TempsAuthDto } from './dto/temps-auth.dto';
+import { VerifyAuthDto } from './dto/verify-auth.dto';
 
 @Injectable()
 export class AuthService {
   constructor(
+    private readonly jwtService: JwtService,
     @InjectRepository(tempsAuth)
     private tempsAuthRepository: Repository<tempsAuth>,
+    @InjectRepository(permsAuth)
+    private permsAuthRepository: Repository<permsAuth>,
   ) {}
+  // Signup
   async create(tempsAuthDto: TempsAuthDto) {
     const { email } = tempsAuthDto;
     const nonVerUsers = await this.tempsAuthRepository.find({
@@ -20,17 +26,42 @@ export class AuthService {
     if (nonVerUsers.length === 1) {
       return {
         statusCode: HttpStatus.OK,
-        message: 'User Is Being Reviewed or Verification',
+        message: 'anggota sedang dalam review atau menunggu verifikasi',
       };
     } else {
       const signupTemp = this.tempsAuthRepository.create(tempsAuthDto);
       await this.tempsAuthRepository.save(tempsAuthDto);
       return {
         statusCode: HttpStatus.OK,
-        message:
-          'registration has been successful, please wait for the verification',
+        message: 'pendaftaran telah berhasil, silakan tunggu verifikasi',
         data: signupTemp,
       };
     }
+  }
+  // Login
+  async login(verifyAuthDto: VerifyAuthDto) {
+    const user = await this.validateUser(verifyAuthDto);
+    const payload = {
+      userId: user.id,
+    };
+    return {
+      expires_in: 3600,
+      access_token: this.jwtService.sign(payload),
+      user: user.id,
+      status: 200,
+    };
+  }
+  // Validate Email & Password
+  async validateUser(verifyAuthDto: VerifyAuthDto): Promise<permsAuth> {
+    const { email, password } = verifyAuthDto;
+    const user = await this.permsAuthRepository.findOne({
+      where: {
+        email: email,
+      },
+    });
+    if (!(await user?.validatePassword(password))) {
+      throw new UnauthorizedException();
+    }
+    return user;
   }
 }

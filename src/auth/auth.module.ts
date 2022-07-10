@@ -8,12 +8,14 @@ import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { permsAuth, tempsAuth } from './entities/auth.entity';
 
+const ENV = process.env.NODE_ENV;
+
 @Module({
   imports: [
-    TypeOrmModule.forFeature([
-      permsAuth,
-      tempsAuth
-    ]),
+    ConfigModule.forRoot({
+      envFilePath: !ENV ? '.env' : `.${ENV}.env`,
+    }),
+    TypeOrmModule.forFeature([permsAuth, tempsAuth]),
     PassportModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],

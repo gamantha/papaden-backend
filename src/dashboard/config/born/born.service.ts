@@ -30,7 +30,7 @@ export class BornService {
     if (bornCats.length === 1) {
       return {
         statusCode: HttpStatus.OK,
-        message: 'kategori usia telah ada di dalam lists',
+        message: 'kategori usia telah tersedia di dalam lists',
       };
     } else {
       const valsBorn = this.bornRepository.create(createBornDto);

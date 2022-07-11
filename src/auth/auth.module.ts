@@ -7,6 +7,7 @@ import { JwtStrategy } from './strategy/jwt.strategy';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { permsAuth, tempsAuth } from './entities/auth.entity';
+import { Sex } from '../dashboard/config/sex/entities/sex.entity';
 
 const ENV = process.env.NODE_ENV;
 
@@ -15,7 +16,7 @@ const ENV = process.env.NODE_ENV;
     ConfigModule.forRoot({
       envFilePath: !ENV ? '.env' : `.${ENV}.env`,
     }),
-    TypeOrmModule.forFeature([permsAuth, tempsAuth]),
+    TypeOrmModule.forFeature([permsAuth, tempsAuth, Sex]),
     PassportModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],

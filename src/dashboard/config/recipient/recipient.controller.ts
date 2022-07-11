@@ -1,34 +1,36 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { RecipientService } from './recipient.service';
 import { CreateRecipientDto } from './dto/create-recipient.dto';
-import { UpdateRecipientDto } from './dto/update-recipient.dto';
 
-@Controller('recipient')
+@Controller('/dashboard/config/recipient')
 export class RecipientController {
   constructor(private readonly recipientService: RecipientService) {}
-
-  @Post()
-  create(@Body() createRecipientDto: CreateRecipientDto) {
-    return this.recipientService.create(createRecipientDto);
+  // Get Recipient
+  @Get('')
+  async getRecipient() {
+    return await this.recipientService.getRecipients();
   }
-
-  @Get()
-  findAll() {
-    return this.recipientService.findAll();
+  // Create Recipient
+  @Post('')
+  async createRecipient(@Body() createRecipientDto: CreateRecipientDto) {
+    return await this.recipientService.createRecipient(createRecipientDto);
   }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.recipientService.findOne(+id);
+  // Update Recipient
+  @Patch(':recipient_category_id')
+  async updateRecipient(
+    @Param('recipient_category_id') recipient_category_id: number,
+    @Body() createRecipientDto: CreateRecipientDto,
+  ) {
+    return await this.recipientService.updateRecipient(
+      recipient_category_id,
+      createRecipientDto,
+    );
   }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateRecipientDto: UpdateRecipientDto) {
-    return this.recipientService.update(+id, updateRecipientDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.recipientService.remove(+id);
+  // Delete Recipient
+  @Delete(':recipient_category_id')
+  async removeRecipient(
+    @Param('recipient_category_id') recipient_category_id: number,
+  ) {
+    return await this.recipientService.removeRecipient(recipient_category_id);
   }
 }

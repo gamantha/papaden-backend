@@ -1,4 +1,4 @@
-import { Controller, Post, Body, HttpStatus } from '@nestjs/common';
+import { Controller, Post, Body, HttpStatus, Get } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { TempsAuthDto } from './dto/temps-auth.dto';
 import { VerifyAuthDto } from './dto/verify-auth.dto';
@@ -20,5 +20,10 @@ export class AuthController {
       message: 'User Login successfully',
       tokenVals,
     };
+  }
+
+  @Get('sexcats')
+  async getSex() {
+    return await this.authService.getSex();
   }
 }

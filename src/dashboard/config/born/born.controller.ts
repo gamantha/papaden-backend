@@ -20,7 +20,7 @@ export class BornController {
   }
   // Create Born
   @Post('')
-  async createBornCats(@Body() createBornDto: CreateBornDto) {
+  async createBorn(@Body() createBornDto: CreateBornDto) {
     return await this.bornService.createBorn(createBornDto);
   }
   // Update Born
@@ -33,7 +33,7 @@ export class BornController {
   }
   // Delete Born
   @Delete(':born_category_id')
-  async removeBornCats(@Param('born_category_id') born_category_id: number) {
+  async removeBorn(@Param('born_category_id') born_category_id: number) {
     return await this.bornService.removeBorn(born_category_id);
   }
 }

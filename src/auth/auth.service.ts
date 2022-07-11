@@ -5,6 +5,7 @@ import { JwtService } from '@nestjs/jwt';
 import { permsAuth, tempsAuth } from './entities/auth.entity';
 import { TempsAuthDto } from './dto/temps-auth.dto';
 import { VerifyAuthDto } from './dto/verify-auth.dto';
+import { Sex } from '../dashboard/config/sex/entities/sex.entity';
 
 @Injectable()
 export class AuthService {
@@ -14,6 +15,8 @@ export class AuthService {
     private tempsAuthRepository: Repository<tempsAuth>,
     @InjectRepository(permsAuth)
     private permsAuthRepository: Repository<permsAuth>,
+    @InjectRepository(Sex)
+    private sexRepository: Repository<Sex>,
   ) {}
   // Signup
   async create(tempsAuthDto: TempsAuthDto) {
@@ -63,5 +66,14 @@ export class AuthService {
       throw new UnauthorizedException();
     }
     return user;
+  }
+  // Sex
+  async getSex() {
+    const sexVals = await this.sexRepository.find();
+    return {
+      statusCode: HttpStatus.OK,
+      message: 'list gender telah berhasil didapatkan',
+      data: sexVals,
+    };
   }
 }

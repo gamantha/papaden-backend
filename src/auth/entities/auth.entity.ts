@@ -39,6 +39,7 @@ export class tempsAuth {
   created_on: Date;
   @UpdateDateColumn()
   updated_on: Date;
+
   @BeforeInsert()
   async hashPassword() {
     this.password = await bcrypt.hash(this.password, 10);

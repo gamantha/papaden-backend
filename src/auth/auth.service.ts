@@ -30,7 +30,7 @@ export class AuthService {
       };
     } else {
       const signupTemp = this.tempsAuthRepository.create(tempsAuthDto);
-      await this.tempsAuthRepository.save(tempsAuthDto);
+      await this.tempsAuthRepository.save(signupTemp);
       return {
         statusCode: HttpStatus.OK,
         message: 'pendaftaran telah berhasil, silakan tunggu verifikasi',

@@ -1,34 +1,39 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { SexService } from './sex.service';
 import { CreateSexDto } from './dto/create-sex.dto';
-import { UpdateSexDto } from './dto/update-sex.dto';
 
-@Controller('sex')
+@Controller('/dashboard/config/sex')
 export class SexController {
   constructor(private readonly sexService: SexService) {}
-
-  @Post()
-  create(@Body() createSexDto: CreateSexDto) {
-    return this.sexService.create(createSexDto);
+  // Get Sex
+  @Get('')
+  async getSex() {
+    return await this.sexService.getSex();
   }
-
-  @Get()
-  findAll() {
-    return this.sexService.findAll();
+  // Create Sex
+  @Post('')
+  async createSex(@Body() createSexDto: CreateSexDto) {
+    return await this.sexService.createSex(createSexDto);
   }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.sexService.findOne(+id);
+  // Update Sex
+  @Patch(':sex_category_id')
+  async updateSex(
+    @Param('sex_category_id') sex_category_id: number,
+    @Body() createSexDto: CreateSexDto,
+  ) {
+    return await this.sexService.updateSex(sex_category_id, createSexDto);
   }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateSexDto: UpdateSexDto) {
-    return this.sexService.update(+id, updateSexDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.sexService.remove(+id);
+  // Delete Sex
+  @Delete(':sex_category_id')
+  async removeSex(@Param('sex_category_id') sex_category_id: number) {
+    return await this.sexService.removeSex(sex_category_id);
   }
 }

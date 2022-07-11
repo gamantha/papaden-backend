@@ -25,7 +25,7 @@ export class BornController {
   }
   // Update Born
   @Patch(':born_category_id')
-  async updateBornCats(
+  async updateBorn(
     @Param('born_category_id') born_category_id: number,
     @Body() createBornDto: CreateBornDto,
   ) {

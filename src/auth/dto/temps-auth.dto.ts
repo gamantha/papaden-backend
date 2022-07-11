@@ -36,9 +36,7 @@ export class TempsAuthDto {
   })
   @IsEmail()
   email: string;
-  @ApiProperty({
-    example: 'e.g. 123@!abC,  min 8 char',
-  })
+  @ApiProperty({ example: 'e.g. 345$dfG,  min 8 char' })
   @IsNotEmpty()
   @MinLength(8)
   @Matches(/((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {

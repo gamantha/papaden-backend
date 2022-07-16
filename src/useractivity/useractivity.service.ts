@@ -7,6 +7,7 @@ import { Tag } from '../dashboard/config/tags/entities/tag.entity';
 import { Recipient } from '../dashboard/config/recipient/entities/recipient.entity';
 import { Consultant } from '../dashboard/consultant/entities/consultant.entity';
 import { IPaginationOptions, paginate } from 'nestjs-typeorm-paginate';
+import { profilImage } from './entities/useractivity.entity';
 
 @Injectable()
 export class UseractivityService {
@@ -23,6 +24,8 @@ export class UseractivityService {
     private recipientRepository: Repository<Recipient>,
     @InjectRepository(Consultant)
     private consultantRepository: Repository<Consultant>,
+    @InjectRepository(profilImage)
+    private profilImageRepository: Repository<profilImage>,
   ) {}
   // Get Profil
   async findProfil(vals: any) {
@@ -51,6 +54,55 @@ export class UseractivityService {
         profils: profilsPerm,
       };
     }
+  }
+  // Upload Profil Image
+  async avatarUpload(id: string, file: Express.Multer.File) {
+    const avatarData = await this.profilImageRepository.find({
+      where: {
+        id: id,
+      },
+    });
+    if (avatarData.length === 1) {
+      await this.profilImageRepository
+        .createQueryBuilder()
+        .update('profil_image')
+        .set({
+          profil_filename: file.path,
+          profil_path: file.originalname,
+          profil_mimetype: file.mimetype,
+        })
+        .where('id = :id', { id: id })
+        .execute();
+    } else {
+      await this.profilImageRepository
+        .createQueryBuilder()
+        .insert()
+        .into('profil_image')
+        .values({
+          id: id,
+          profil_filename: file.path,
+          profil_path: file.originalname,
+          profil_mimetype: file.mimetype,
+        })
+        .execute();
+      return {
+        statusCode: HttpStatus.OK,
+        message: 'profil image user telah berhasil diupload',
+      };
+    }
+  }
+  // Get Profil Image
+  async avatarGet(id: string) {
+    const avatarData = await this.profilImageRepository.findOne({
+      where: {
+        id: id,
+      },
+    });
+    return {
+      statusCode: HttpStatus.OK,
+      message: 'profil image user telah berhasil didapatkan',
+      data: avatarData,
+    };
   }
   // Get Born
   async findBorn() {

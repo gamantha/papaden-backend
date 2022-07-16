@@ -36,14 +36,14 @@ export class ConsultantController {
   }
   // Create Consultant
   @Post('')
-  async createConsultant(createConsultantDto: CreateConsultantDto) {
+  async createConsultant(@Body() createConsultantDto: CreateConsultantDto) {
     return await this.consultantService.createConsultant(createConsultantDto);
   }
   // Update Consultant
   @Patch(':consultant_id')
   async updateConsultant(
-    consultant_id: string,
-    updateConsultantDto: UpdateConsultantDto,
+    @Param('consultant_id') consultant_id: string,
+    @Body() updateConsultantDto: UpdateConsultantDto,
   ) {
     return await this.consultantService.updateConsultant(
       consultant_id,
@@ -52,7 +52,7 @@ export class ConsultantController {
   }
   // Delete Consultant
   @Delete(':consultant_id')
-  async removeConsultant(consultant_id: string) {
+  async removeConsultant(@Param('consultant_id') consultant_id: string) {
     return await this.consultantService.removeConsultant(consultant_id);
   }
 }

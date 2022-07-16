@@ -15,6 +15,8 @@ export class Consultant {
   consultant_exp: string;
   @Column()
   consultant_phone: string;
-  @Column()
+  @Column({
+    nullable: true,
+  })
   consultant_profil_url: string;
 }

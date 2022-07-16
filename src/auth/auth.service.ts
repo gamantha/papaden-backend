@@ -53,6 +53,7 @@ export class AuthService {
       user: user.id,
       val: user.status,
       status: 200,
+      profil: user,
     };
   }
   // Validate Email & Password

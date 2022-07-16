@@ -26,7 +26,8 @@ export class ConsultantController {
     @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit = 10,
   ) {
     limit = limit > 100 ? 100 : limit;
-    return await this.consultantService.getConsultant({
+    return await this.consultantService.getConsultant(
+      {
         page,
         limit,
         route: 'consultant',

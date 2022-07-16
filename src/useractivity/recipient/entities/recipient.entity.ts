@@ -1,4 +1,10 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity('activity_recipient_register')
 export class RecipientReg {
@@ -18,4 +24,8 @@ export class RecipientReg {
   regs_city: string;
   @Column()
   regs_edu: string;
+  @CreateDateColumn()
+  regs_created_on: Date;
+  @UpdateDateColumn()
+  regs_updated_on: Date;
 }

@@ -1,4 +1,10 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity('activity_book')
 export class Book {
@@ -18,4 +24,8 @@ export class Book {
   book_phone: string;
   @Column('simple-json')
   book_tags: { tags_category_id: number; tags_category_title: string };
+  @CreateDateColumn()
+  book_created_on: Date;
+  @UpdateDateColumn()
+  book_updated_on: Date;
 }

@@ -8,6 +8,7 @@ import { Tag } from '../dashboard/config/tags/entities/tag.entity';
 import { Recipient } from '../dashboard/config/recipient/entities/recipient.entity';
 import { Consultant } from '../dashboard/consultant/entities/consultant.entity';
 import { BooksModule } from './books/books.module';
+import { RecipientModule } from './recipient/recipient.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { BooksModule } from './books/books.module';
       Consultant,
     ]),
     BooksModule,
+    RecipientModule,
   ],
   controllers: [UseractivityController],
   providers: [UseractivityService],

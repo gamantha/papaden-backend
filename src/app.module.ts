@@ -6,6 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { UseractivityModule } from './useractivity/useractivity.module';
+import * as Joi from 'joi';
 
 const ENV = process.env.NODE_ENV;
 
@@ -13,6 +14,9 @@ const ENV = process.env.NODE_ENV;
   imports: [
     ConfigModule.forRoot({
       envFilePath: !ENV ? '.env' : `.${ENV}.env`,
+      validationSchema: Joi.object({
+        UPLOADED_FILES_DESTINATION: Joi.string().required(),
+      }),
     }),
     TypeOrmModule.forRoot({
       type: 'mysql',

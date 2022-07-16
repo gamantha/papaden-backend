@@ -9,13 +9,8 @@ import { AuthController } from './auth.controller';
 import { permsAuth, tempsAuth } from './entities/auth.entity';
 import { Sex } from '../dashboard/config/sex/entities/sex.entity';
 
-const ENV = process.env.NODE_ENV;
-
 @Module({
   imports: [
-    ConfigModule.forRoot({
-      envFilePath: !ENV ? '.env' : `.${ENV}.env`,
-    }),
     TypeOrmModule.forFeature([permsAuth, tempsAuth, Sex]),
     PassportModule,
     JwtModule.registerAsync({

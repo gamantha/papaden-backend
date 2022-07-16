@@ -3,7 +3,7 @@ import { RecipientService } from './recipient.service';
 import { CreateRecipientDto } from './dto/create-recipient.dto';
 import { JwtAuthGuard } from '../../auth/strategy/jwt-auth.guard';
 
-@Controller('recipient')
+@Controller('/useractivity/recipient')
 export class RecipientController {
   constructor(private readonly recipientService: RecipientService) {}
 

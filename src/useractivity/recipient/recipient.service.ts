@@ -1,4 +1,4 @@
-import { HttpStatus, Injectable } from "@nestjs/common";
+import { HttpStatus, Injectable } from '@nestjs/common';
 import { CreateRecipientDto } from './dto/create-recipient.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { RecipientReg } from './entities/recipient.entity';

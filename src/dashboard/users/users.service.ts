@@ -4,6 +4,7 @@ import { permsAuth, tempsAuth } from '../../auth/entities/auth.entity';
 import { Brackets, Repository } from 'typeorm';
 import { IPaginationOptions, paginate } from 'nestjs-typeorm-paginate';
 import { TempsAuthDto } from '../../auth/dto/temps-auth.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UsersService {
@@ -81,8 +82,8 @@ export class UsersService {
     };
   }
   // Update Register
-  async updTempUsers(id: number, tempsAuthDto: TempsAuthDto) {
-    await this.tempsAuthRepository.update(id, tempsAuthDto);
+  async updTempUsers(id: number, updateUserDto: UpdateUserDto) {
+    await this.tempsAuthRepository.update(id, updateUserDto);
     return {
       statusCode: HttpStatus.OK,
       message: 'data pendaftar telah diupdate',
@@ -145,8 +146,8 @@ export class UsersService {
     };
   }
   // Update Member
-  async updPermUsers(id: string, tempsAuthDto: TempsAuthDto) {
-    await this.permsAuthRepository.update(id, tempsAuthDto);
+  async updPermUsers(id: string, updateUserDto: UpdateUserDto) {
+    await this.permsAuthRepository.update(id, updateUserDto);
     return {
       statusCode: HttpStatus.OK,
       message: 'data member telah diupdate',

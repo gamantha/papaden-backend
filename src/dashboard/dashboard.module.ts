@@ -3,10 +3,11 @@ import { DashboardService } from './dashboard.service';
 import { DashboardController } from './dashboard.controller';
 import { UsersModule } from './users/users.module';
 import { ConfigModule } from './config/config.module';
+import { ConsultantModule } from './consultant/consultant.module';
 
 @Module({
   controllers: [DashboardController],
   providers: [DashboardService],
-  imports: [UsersModule, ConfigModule]
+  imports: [UsersModule, ConfigModule, ConsultantModule]
 })
 export class DashboardModule {}

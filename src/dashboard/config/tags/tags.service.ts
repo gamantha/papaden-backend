@@ -1,26 +1,67 @@
-import { Injectable } from '@nestjs/common';
+import { HttpStatus, Injectable } from '@nestjs/common';
 import { CreateTagDto } from './dto/create-tag.dto';
-import { UpdateTagDto } from './dto/update-tag.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Tag } from './entities/tag.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class TagsService {
-  create(createTagDto: CreateTagDto) {
-    return 'This action adds a new tag';
+  constructor(
+    @InjectRepository(Tag)
+    private tagRepository: Repository<Tag>,
+  ) {}
+  // Get Tag
+  async getTag() {
+    const listTags = await this.tagRepository.find();
+    return {
+      statusCode: HttpStatus.OK,
+      message: 'list tag berhasil didapatkan',
+      data: listTags,
+    };
   }
-
-  findAll() {
-    return `This action returns all tags`;
+  // Create Tag
+  async createTag(createTagDto: CreateTagDto) {
+    const { tags_category_title } = createTagDto;
+    const tagsList = await this.tagRepository.find({
+      where: {
+        tags_category_title: tags_category_title,
+      },
+    });
+    if (tagsList.length === 1) {
+      return {
+        statusCode: HttpStatus.OK,
+        message: 'tags telah tersedia dalam lists',
+      };
+    } else {
+      const valTags = await this.tagRepository.create(createTagDto);
+      await this.tagRepository.save(valTags);
+      return {
+        statusCode: HttpStatus.OK,
+        message: 'tags telah berhasil ditambahkan',
+        data: valTags,
+      };
+    }
   }
-
-  findOne(id: number) {
-    return `This action returns a #${id} tag`;
+  // Update Tag
+  async updateTag(tags_category_id: number, createTagDto: CreateTagDto) {
+    await this.tagRepository.update(tags_category_id, createTagDto);
+    const upValsTags = await this.tagRepository.findOne({
+      where: {
+        tags_category_id: tags_category_id,
+      },
+    });
+    return {
+      statusCode: HttpStatus.OK,
+      message: 'tags telah berhasil diupdate',
+      data: upValsTags,
+    };
   }
-
-  update(id: number, updateTagDto: UpdateTagDto) {
-    return `This action updates a #${id} tag`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} tag`;
+  // Delete Tag
+  async removeTag(tags_category_id: number) {
+    await this.tagRepository.delete(tags_category_id);
+    return {
+      statusCode: HttpStatus.OK,
+      message: 'tags telah berhasil dihapus',
+    };
   }
 }

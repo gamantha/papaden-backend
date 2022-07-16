@@ -51,22 +51,39 @@ export class AuthService {
       expires_in: 3600,
       access_token: this.jwtService.sign(payload),
       user: user.id,
+      val: user.status,
       status: 200,
     };
   }
   // Validate Email & Password
-  async validateUser(verifyAuthDto: VerifyAuthDto): Promise<permsAuth> {
+  async validateUser(verifyAuthDto: VerifyAuthDto) {
     const { email, password } = verifyAuthDto;
-    const user = await this.permsAuthRepository.findOne({
+
+    const userTemps = await this.tempsAuthRepository.findOne({
       where: {
         email: email,
       },
     });
+
+    const userPerms = await this.permsAuthRepository.findOne({
+      where: {
+        email: email,
+      },
+    });
+
+    let user;
+    if (userTemps) {
+      user = userTemps;
+    } else {
+      user = userPerms;
+    }
+
     if (!(await user?.validatePassword(password))) {
       throw new UnauthorizedException();
     }
     return user;
   }
+
   // Sex
   async getSex() {
     const sexVals = await this.sexRepository.find();

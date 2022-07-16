@@ -1,34 +1,39 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { TagsService } from './tags.service';
 import { CreateTagDto } from './dto/create-tag.dto';
-import { UpdateTagDto } from './dto/update-tag.dto';
 
-@Controller('tags')
+@Controller('/dashboard/config/tag')
 export class TagsController {
   constructor(private readonly tagsService: TagsService) {}
-
-  @Post()
-  create(@Body() createTagDto: CreateTagDto) {
-    return this.tagsService.create(createTagDto);
+  // Get Born
+  @Get('')
+  async getTag() {
+    return await this.tagsService.getTag();
   }
-
-  @Get()
-  findAll() {
-    return this.tagsService.findAll();
+  // Create Born
+  @Post('')
+  async createTag(@Body() createTagDto: CreateTagDto) {
+    return await this.tagsService.createTag(createTagDto);
   }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.tagsService.findOne(+id);
+  // Update Born
+  @Patch(':tags_category_id')
+  async updateTag(
+    @Param('tags_category_id') tags_category_id: number,
+    @Body() createTagDto: CreateTagDto,
+  ) {
+    return await this.tagsService.updateTag(tags_category_id, createTagDto);
   }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateTagDto: UpdateTagDto) {
-    return this.tagsService.update(+id, updateTagDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.tagsService.remove(+id);
+  // Delete Born
+  @Delete(':tags_category_id')
+  async removeTag(@Param('tags_category_id') tags_category_id: number) {
+    return await this.tagsService.removeTag(tags_category_id);
   }
 }

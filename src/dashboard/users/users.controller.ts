@@ -12,6 +12,7 @@ import {
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { TempsAuthDto } from '../../auth/dto/temps-auth.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Controller('dashboard/users')
 export class UsersController {
@@ -47,9 +48,9 @@ export class UsersController {
   @Patch('register/:id')
   async updTempUsers(
     @Param('id') id: number,
-    @Body() tempsAuthDto: TempsAuthDto,
+    @Body() updateUserDto: UpdateUserDto,
   ) {
-    return await this.usersService.updTempUsers(id, tempsAuthDto);
+    return await this.usersService.updTempUsers(id, updateUserDto);
   }
   // Validate
   @Post('register/vals')
@@ -82,8 +83,8 @@ export class UsersController {
   @Patch('member/:id')
   async updPermUsers(
     @Param('id') id: string,
-    @Body() tempsAuthDto: TempsAuthDto,
+    @Body() updateUserDto: UpdateUserDto,
   ) {
-    return await this.usersService.updPermUsers(id, tempsAuthDto);
+    return await this.usersService.updPermUsers(id, updateUserDto);
   }
 }

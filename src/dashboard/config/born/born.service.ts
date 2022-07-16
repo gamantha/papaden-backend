@@ -37,7 +37,7 @@ export class BornService {
       await this.bornRepository.save(valsBorn);
       return {
         statusCode: HttpStatus.OK,
-        message: 'kategori usia berhasil ditambahkan dalam lists',
+        message: 'kategori usia berhasil ditambahkan ke dalam lists',
         data: valsBorn,
       };
     }

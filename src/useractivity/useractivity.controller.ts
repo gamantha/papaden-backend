@@ -34,7 +34,7 @@ export class UseractivityController {
   @UseGuards(JwtAuthGuard)
   @Patch('profil/:id')
   async updProfil(
-    @Param('id') id: string,
+    @Param('id') id: any,
     @Body() updateUseractivityDto: UpdateUseractivityDto,
   ) {
     return await this.useractivityService.updProfil(id, updateUseractivityDto);

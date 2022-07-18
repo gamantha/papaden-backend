@@ -59,13 +59,17 @@ export class permsAuth {
   id: string;
   @Column()
   fullname: string;
-  @Column()
+  @Column({
+    nullable: true,
+  })
   born_city: string;
   @Column('datetime', {
     nullable: false,
   })
   born_date: Date;
-  @Column()
+  @Column({
+    nullable: false,
+  })
   sex_category_title: string;
   @Column({ unique: true })
   phone: string;

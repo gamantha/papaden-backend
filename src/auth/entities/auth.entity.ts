@@ -20,7 +20,7 @@ export class tempsAuth {
     nullable: true,
   })
   born_city: string;
-  @Column('timestamp', {
+  @Column('datetime', {
     nullable: true,
   })
   born_date: Date;
@@ -61,7 +61,9 @@ export class permsAuth {
   fullname: string;
   @Column()
   born_city: string;
-  @Column('timestamp')
+  @Column('datetime', {
+    nullable: true,
+  })
   born_date: Date;
   @Column()
   sex_category_title: string;

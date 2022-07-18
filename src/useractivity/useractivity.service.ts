@@ -59,20 +59,20 @@ export class UseractivityService {
     }
   }
   // Update Profil
-  async updProfil(id: any, updateUseractivityDto: UpdateUseractivityDto) {
+  async updProfil(userData: any, updateUseractivityDto: UpdateUseractivityDto) {
     const tempUser = await this.tempsAuthRepository.find({
       where: {
-        id: id,
+        id: userData,
       },
     });
     if (tempUser.length === 1) {
-      await this.tempsAuthRepository.update(id, updateUseractivityDto);
+      await this.tempsAuthRepository.update(userData, updateUseractivityDto);
       return {
         statusCode: HttpStatus.OK,
         message: 'data member telah diupdate',
       };
     } else {
-      await this.permsAuthRepository.update(id, updateUseractivityDto);
+      await this.permsAuthRepository.update(userData, updateUseractivityDto);
       return {
         statusCode: HttpStatus.OK,
         message: 'data member telah diupdate',
@@ -171,13 +171,13 @@ export class UseractivityService {
   }
   // Update Password
   async recoveryPassword(
-    id: any,
+    userData: any,
     passwordUseractivityDto: PasswordUseractivityDto,
   ) {
     const { password } = passwordUseractivityDto;
     const tempUserPass = await this.tempsAuthRepository.find({
       where: {
-        id: id,
+        id: userData,
       },
     });
     const passwordUpdate: string = await bcrypt.hash(password, 10);
@@ -188,7 +188,7 @@ export class UseractivityService {
         .set({
           password: passwordUpdate,
         })
-        .where('id = :id', { id: id })
+        .where('id = :id', { id: userData })
         .execute();
       return {
         statusCode: HttpStatus.OK,
@@ -201,7 +201,7 @@ export class UseractivityService {
         .set({
           password: passwordUpdate,
         })
-        .where('id = :id', { id: id })
+        .where('id = :id', { id: userData })
         .execute();
       return {
         statusCode: HttpStatus.OK,

@@ -7,6 +7,9 @@ export class CreateBookDto {
     example: 'consultan id register .g. 23a1509f-7542-4251-a671-6655f53f3de4',
   })
   consultant_id: string;
+  @ApiProperty({ example: 'e.g. Dr. Majin Boo' })
+  @IsNotEmpty()
+  consultant_fullname: string;
   @ApiProperty({
     example: 'user id register e.g. 4259a708-cece-4f7d-8335-d85cb0328ece',
   })

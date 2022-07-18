@@ -32,22 +32,27 @@ export class UseractivityController {
   }
   // Update Profil
   @UseGuards(JwtAuthGuard)
-  @Patch('profil/:id')
+  @Patch('profil')
   async updProfil(
-    @Param('id') id: any,
+    @Request() req: any,
     @Body() updateUseractivityDto: UpdateUseractivityDto,
   ) {
-    return await this.useractivityService.updProfil(id, updateUseractivityDto);
+    const userData = Object.values(req.user);
+    return await this.useractivityService.updProfil(
+      userData,
+      updateUseractivityDto,
+    );
   }
   // Update Password
   @UseGuards(JwtAuthGuard)
-  @Patch('profil/password/:id')
+  @Patch('profil/password')
   async recoveryPassword(
-    @Param('id') id: any,
+    @Request() req: any,
     @Body() passwordUseractivityDto: PasswordUseractivityDto,
   ) {
+    const userData = Object.values(req.user);
     return await this.useractivityService.recoveryPassword(
-      id,
+      userData,
       passwordUseractivityDto,
     );
   }

@@ -13,6 +13,8 @@ export class Book {
   @Column()
   consultant_id: string;
   @Column()
+  consultant_fullname: string;
+  @Column()
   id: string;
   @Column()
   fullname: string;

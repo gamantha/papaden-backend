@@ -9,11 +9,16 @@ import {
   Post,
   UseInterceptors,
   UploadedFile,
+  Patch,
+  Param,
+  Body,
 } from '@nestjs/common';
 import { UseractivityService } from './useractivity.service';
 import { JwtAuthGuard } from '../auth/strategy/jwt-auth.guard';
 import { ApiBody, ApiConsumes } from '@nestjs/swagger';
 import LocalFilesInterceptor from './local.interceptor';
+import { UpdateUseractivityDto } from './dto/update-useractivity.dto';
+import { PasswordUseractivityDto } from './dto/password-useractivity.dto';
 
 @Controller('useractivity')
 export class UseractivityController {
@@ -24,6 +29,27 @@ export class UseractivityController {
   async getProfil(@Request() req: any) {
     const vals = Object.values(req.user);
     return await this.useractivityService.findProfil(vals);
+  }
+  // Update Profil
+  @UseGuards(JwtAuthGuard)
+  @Patch('profil/:id')
+  async updProfil(
+    @Param('id') id: string,
+    @Body() updateUseractivityDto: UpdateUseractivityDto,
+  ) {
+    return await this.useractivityService.updProfil(id, updateUseractivityDto);
+  }
+  // Update Password
+  @UseGuards(JwtAuthGuard)
+  @Patch('profil/password/:id')
+  async recoveryPassword(
+    @Param('id') id: any,
+    @Body() passwordUseractivityDto: PasswordUseractivityDto,
+  ) {
+    return await this.useractivityService.recoveryPassword(
+      id,
+      passwordUseractivityDto,
+    );
   }
   // Get Profil Image
   @UseGuards(JwtAuthGuard)

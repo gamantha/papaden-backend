@@ -1,5 +1,6 @@
 import {
   BeforeInsert,
+  BeforeUpdate,
   Column,
   CreateDateColumn,
   Entity,
@@ -41,6 +42,7 @@ export class tempsAuth {
   updated_on: Date;
 
   @BeforeInsert()
+  @BeforeUpdate()
   async hashPassword() {
     this.password = await bcrypt.hash(this.password, 10);
     return this.password;
@@ -76,6 +78,7 @@ export class permsAuth {
   @UpdateDateColumn()
   updated_on: Date;
   @BeforeInsert()
+  @BeforeUpdate()
   async hashPassword() {
     this.password = await bcrypt.hash(this.password, 10);
     return this.password;

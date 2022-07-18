@@ -1,5 +1,5 @@
 import { HttpStatus, Injectable } from '@nestjs/common';
-import { CreateRecipientDto } from './dto/create-recipient.dto';
+import { CreateRecipientCatsDto } from './dto/create-recipient.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Recipient } from './entities/recipient.entity';
 import { Repository } from 'typeorm';
@@ -20,8 +20,8 @@ export class RecipientService {
     };
   }
   // Create Recipient Service
-  async createRecipient(createRecipientDto: CreateRecipientDto) {
-    const { rec_cat_title } = createRecipientDto;
+  async createRecipient(createRecipientCatsDto: CreateRecipientCatsDto) {
+    const { rec_cat_title } = createRecipientCatsDto;
     const regCats = await this.recipientRepository.find({
       where: {
         rec_cat_title: rec_cat_title,
@@ -33,7 +33,7 @@ export class RecipientService {
         message: 'kategori donatur tersedia di dalam lists',
       };
     } else {
-      const valsCats = this.recipientRepository.create(createRecipientDto);
+      const valsCats = this.recipientRepository.create(createRecipientCatsDto);
       await this.recipientRepository.save(valsCats);
       return {
         statusCode: HttpStatus.OK,
@@ -45,9 +45,9 @@ export class RecipientService {
   // Update Recipient Service
   async updateRecipient(
     rec_cat_id: number,
-    createRecipientDto: CreateRecipientDto,
+    createRecipientCatsDto: CreateRecipientCatsDto,
   ) {
-    await this.recipientRepository.update(rec_cat_id, createRecipientDto);
+    await this.recipientRepository.update(rec_cat_id, createRecipientCatsDto);
     const updVals = await this.recipientRepository.findOne({
       where: {
         rec_cat_id: rec_cat_id,

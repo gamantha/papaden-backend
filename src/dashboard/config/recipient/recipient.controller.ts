@@ -1,6 +1,14 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { RecipientService } from './recipient.service';
-import { CreateRecipientDto } from './dto/create-recipient.dto';
+import { CreateRecipientCatsDto } from './dto/create-recipient.dto';
 
 @Controller('/dashboard/config/recipient')
 export class RecipientController {
@@ -12,18 +20,18 @@ export class RecipientController {
   }
   // Create Recipient
   @Post('')
-  async createRecipient(@Body() createRecipientDto: CreateRecipientDto) {
-    return await this.recipientService.createRecipient(createRecipientDto);
+  async createRecipient(@Body() createRecipientCatsDto: CreateRecipientCatsDto) {
+    return await this.recipientService.createRecipient(createRecipientCatsDto);
   }
   // Update Recipient
   @Patch(':recipient_category_id')
   async updateRecipient(
     @Param('recipient_category_id') recipient_category_id: number,
-    @Body() createRecipientDto: CreateRecipientDto,
+    @Body() createRecipientCatsDto: CreateRecipientCatsDto,
   ) {
     return await this.recipientService.updateRecipient(
       recipient_category_id,
-      createRecipientDto,
+      createRecipientCatsDto,
     );
   }
   // Delete Recipient

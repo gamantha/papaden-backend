@@ -8,6 +8,8 @@ import { Recipient } from '../dashboard/config/recipient/entities/recipient.enti
 import { Consultant } from '../dashboard/consultant/entities/consultant.entity';
 import { IPaginationOptions, paginate } from 'nestjs-typeorm-paginate';
 import { profilImage } from './entities/useractivity.entity';
+import { UpdateUseractivityDto } from './dto/update-useractivity.dto';
+import { PasswordUseractivityDto } from './dto/password-useractivity.dto';
 
 @Injectable()
 export class UseractivityService {
@@ -52,6 +54,27 @@ export class UseractivityService {
         statusCode: HttpStatus.OK,
         message: 'profil user berhasil didapatkan',
         profils: profilsPerm,
+      };
+    }
+  }
+  // Update Profil
+  async updProfil(id: any, updateUseractivityDto: UpdateUseractivityDto) {
+    const tempUser = await this.tempsAuthRepository.find({
+      where: {
+        id: id,
+      },
+    });
+    if (tempUser.length === 1) {
+      await this.tempsAuthRepository.update(id, updateUseractivityDto);
+      return {
+        statusCode: HttpStatus.OK,
+        message: 'data member telah diupdate',
+      };
+    } else {
+      await this.permsAuthRepository.update(id, updateUseractivityDto);
+      return {
+        statusCode: HttpStatus.OK,
+        message: 'data member telah diupdate',
       };
     }
   }
@@ -144,5 +167,29 @@ export class UseractivityService {
         }),
       );
     return await paginate<Consultant>(queryBuilder, options);
+  }
+  // Update Password
+  async recoveryPassword(
+    id: any,
+    passwordUseractivityDto: PasswordUseractivityDto,
+  ) {
+    const tempUserPass = await this.tempsAuthRepository.find({
+      where: {
+        id: id,
+      },
+    });
+    if (tempUserPass.length === 1) {
+      await this.tempsAuthRepository.update(id, passwordUseractivityDto);
+      return {
+        statusCode: HttpStatus.OK,
+        message: 'password telah diupdate',
+      };
+    } else {
+      await this.permsAuthRepository.update(id, passwordUseractivityDto);
+      return {
+        statusCode: HttpStatus.OK,
+        message: 'password telah diupdate',
+      };
+    }
   }
 }

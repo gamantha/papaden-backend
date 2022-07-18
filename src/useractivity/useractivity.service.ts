@@ -10,6 +10,7 @@ import { IPaginationOptions, paginate } from 'nestjs-typeorm-paginate';
 import { profilImage } from './entities/useractivity.entity';
 import { UpdateUseractivityDto } from './dto/update-useractivity.dto';
 import { PasswordUseractivityDto } from './dto/password-useractivity.dto';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UseractivityService {
@@ -173,19 +174,35 @@ export class UseractivityService {
     id: any,
     passwordUseractivityDto: PasswordUseractivityDto,
   ) {
+    const { password } = passwordUseractivityDto;
     const tempUserPass = await this.tempsAuthRepository.find({
       where: {
         id: id,
       },
     });
+    const passwordUpdate: string = await bcrypt.hash(password, 10);
     if (tempUserPass.length === 1) {
-      await this.tempsAuthRepository.update(id, passwordUseractivityDto);
+      await this.tempsAuthRepository
+        .createQueryBuilder()
+        .update('temps_auth')
+        .set({
+          password: passwordUpdate,
+        })
+        .where('id = :id', { id: id })
+        .execute();
       return {
         statusCode: HttpStatus.OK,
         message: 'password telah diupdate',
       };
     } else {
-      await this.permsAuthRepository.update(id, passwordUseractivityDto);
+      await this.permsAuthRepository
+        .createQueryBuilder()
+        .update('perms_auth')
+        .set({
+          password: passwordUpdate,
+        })
+        .where('id = :id', { id: id })
+        .execute();
       return {
         statusCode: HttpStatus.OK,
         message: 'password telah diupdate',

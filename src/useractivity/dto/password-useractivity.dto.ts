@@ -1,10 +1,7 @@
-import { ApiProperty, PartialType } from '@nestjs/swagger';
-import { CreateUseractivityDto } from './create-useractivity.dto';
+import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, Matches, MinLength } from 'class-validator';
 
-export class PasswordUseractivityDto extends PartialType(
-  CreateUseractivityDto,
-) {
+export class PasswordUseractivityDto {
   @ApiProperty({
     example:
       'e.g. 345$dfG, min 8 char. for verification, key password isnt needed',

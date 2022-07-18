@@ -1,17 +1,17 @@
 import {
-  Controller,
-  Get,
-  UseGuards,
-  Request,
-  Query,
-  DefaultValuePipe,
-  ParseIntPipe,
-  Post,
-  UseInterceptors,
-  UploadedFile,
-  Patch,
-  Param,
   Body,
+  Controller,
+  DefaultValuePipe,
+  Get,
+  Param,
+  ParseIntPipe,
+  Patch,
+  Post,
+  Query,
+  Request,
+  UploadedFile,
+  UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { UseractivityService } from './useractivity.service';
 import { JwtAuthGuard } from '../auth/strategy/jwt-auth.guard';
@@ -40,7 +40,6 @@ export class UseractivityController {
     return await this.useractivityService.updProfil(id, updateUseractivityDto);
   }
   // Update Password
-  @UseGuards(JwtAuthGuard)
   @Patch('profil/password/:id')
   async recoveryPassword(
     @Param('id') id: any,

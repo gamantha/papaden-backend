@@ -40,6 +40,7 @@ export class UseractivityController {
     return await this.useractivityService.updProfil(id, updateUseractivityDto);
   }
   // Update Password
+  @UseGuards(JwtAuthGuard)
   @Patch('profil/password/:id')
   async recoveryPassword(
     @Param('id') id: any,

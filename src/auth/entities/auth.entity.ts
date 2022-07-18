@@ -62,7 +62,7 @@ export class permsAuth {
   @Column()
   born_city: string;
   @Column('datetime', {
-    nullable: true,
+    nullable: false,
   })
   born_date: Date;
   @Column()

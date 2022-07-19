@@ -24,6 +24,7 @@ export class BooksController {
     return await this.booksService.createBook(createBookDto);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get('')
   async listsBooks(
     @Query('born_category_title') born_category_title: string,

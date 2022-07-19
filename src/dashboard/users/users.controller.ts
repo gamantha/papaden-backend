@@ -34,6 +34,11 @@ export class UsersController {
       search,
     );
   }
+
+  @Get('register/:id')
+  async getTempUsersIds(@Param('id') id: number) {
+    return await this.usersService.getTempUsersIds(id);
+  }
   // Post Register
   @Post('register')
   async postTempUsers(@Body() tempsAuthDto: TempsAuthDto) {
@@ -73,6 +78,10 @@ export class UsersController {
       },
       search,
     );
+  }
+  @Get('member/:id')
+  async getPermUsersIds(@Param('id') id: string) {
+    return await this.usersService.getPermUsersIds(id);
   }
   // Delete Member
   @Delete('member/:id')

@@ -28,6 +28,14 @@ export class UsersService {
       );
     return await paginate<tempsAuth>(queryBuilder, options);
   }
+
+  async getTempUsersIds(id: number) {
+    return await this.tempsAuthRepository.find({
+      where: {
+        id: id,
+      },
+    });
+  }
   // Post Register
   async postTempUsers(tempsAuthDto: TempsAuthDto) {
     const { email, phone } = tempsAuthDto;
@@ -136,6 +144,14 @@ export class UsersService {
         }),
       );
     return await paginate<permsAuth>(queryBuilder, options);
+  }
+
+  async getPermUsersIds(id: string) {
+    return await this.permsAuthRepository.find({
+      where: {
+        id: id,
+      },
+    });
   }
   // Delete Member
   async delPermUsers(id: string) {

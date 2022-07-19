@@ -10,7 +10,7 @@ import {
 } from 'nestjs-typeorm-paginate';
 import { Born } from '../../dashboard/config/born/entities/born.entity';
 import { permsAuth } from '../../auth/entities/auth.entity';
-import moment from 'moment';
+import * as moment from 'moment';
 
 @Injectable()
 export class BooksService {
@@ -75,7 +75,7 @@ export class BooksService {
       })
       .andWhere(
         new Brackets((qb) => {
-          qb.where('perm_book.fullname like :search', {
+          qb.where('activity_book.fullname like :search', {
             search: '%' + searchKeys + '%',
           });
         }),

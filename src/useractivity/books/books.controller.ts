@@ -24,17 +24,14 @@ export class BooksController {
     return await this.booksService.createBook(createBookDto);
   }
 
-  @UseGuards(JwtAuthGuard)
   @Get('')
   async listsBooks(
-    @Request() req: any,
-    @Param('born_category_title') born_category_title: string,
+    @Query('born_category_title') born_category_title: string,
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page = 1,
     @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit = 10,
     @Query('search') search = '',
   ) {
     limit = limit > 100 ? 100 : limit;
-    const userData = Object.values(req.user);
     return await this.booksService.listsBooks(
       born_category_title,
       {
@@ -42,7 +39,6 @@ export class BooksController {
         limit,
         route: 'books',
       },
-      userData,
       search,
     );
   }

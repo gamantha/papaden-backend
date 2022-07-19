@@ -36,7 +36,6 @@ export class BooksService {
   async listsBooks(
     born_category_title: string,
     options: IPaginationOptions,
-    userData: any,
     search: string,
   ): Promise<Pagination<Book>> {
     const birthRange = await this.bornRepository.findOne({
@@ -44,34 +43,25 @@ export class BooksService {
         born_category_title: born_category_title,
       },
     });
-
-    const profils = await this.permsAuthRepository.findOne({
-      where: {
-        id: userData,
-      },
-    });
-
-    const BooksIDs = profils.born_date;
+    const BooksIDs = new Date();
     const birth = new Date();
     const startDate = birth.setFullYear(
-      BooksIDs.getFullYear() + birthRange.born_start_year,
+      BooksIDs.getFullYear() - birthRange.born_start_year,
     );
     const endDate = birth.setFullYear(
-      BooksIDs.getFullYear() + birthRange.born_end_year,
+      BooksIDs.getFullYear() - birthRange.born_end_year,
     );
-
     const sd = new Date(startDate);
     const sdVals = moment(sd).format('YYYY:MM:DD HH:mm:ss');
-
     const nd = new Date(endDate);
     const ndVals = moment(nd).format('YYYY:MM:DD HH:mm:ss');
-
+    console.log(sdVals + ' s/d ' + ndVals);
     const searchKeys = search;
     const queryBuilder = this.bookRepository
       .createQueryBuilder('activity_book')
-      .where('activity_book.born_category_title BETWEEN :stdate AND :endate', {
-        stdate: sdVals,
-        endate: ndVals,
+      .where('activity_book.born_date BETWEEN :stdate AND :endate', {
+        stdate: ndVals,
+        endate: sdVals,
       })
       .andWhere(
         new Brackets((qb) => {
@@ -80,7 +70,6 @@ export class BooksService {
           });
         }),
       );
-
     return paginate<Book>(queryBuilder, options);
   }
 }

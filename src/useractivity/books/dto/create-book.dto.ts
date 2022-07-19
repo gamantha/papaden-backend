@@ -1,4 +1,4 @@
-import { IsNotEmpty } from 'class-validator';
+import { IsNotEmpty, IsOptional } from "class-validator";
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateBookDto {
@@ -18,9 +18,11 @@ export class CreateBookDto {
   @ApiProperty({ example: 'e.g. mifan twan ardana' })
   @IsNotEmpty()
   fullname: string;
-  @ApiProperty({ example: 'e.g. 10-17 Tahun , id from born category table' })
-  @IsNotEmpty()
-  born_category_title: string;
+  @IsOptional()
+  @ApiProperty({
+    example: 'e.g. 0000-00-00 00:00:00',
+  })
+  born_date: Date;
   @ApiProperty({ example: 'e.g. 0000-00-00 00:00:00' })
   @IsNotEmpty()
   book_date: Date;

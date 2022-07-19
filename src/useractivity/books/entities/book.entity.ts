@@ -18,8 +18,10 @@ export class Book {
   id: string;
   @Column()
   fullname: string;
-  @Column()
-  born_category_title: string;
+  @Column('datetime', {
+    nullable: true,
+  })
+  born_date: Date;
   @Column('timestamp')
   book_date: Date;
   @Column()

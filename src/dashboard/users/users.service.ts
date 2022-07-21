@@ -73,7 +73,7 @@ export class UsersService {
       };
     } else {
       const regsTempUsers = this.tempsAuthRepository.create(tempsAuthDto);
-      await this.tempsAuthRepository.save(tempsAuthDto);
+      await this.tempsAuthRepository.save(regsTempUsers);
       return {
         statusCode: HttpStatus.OK,
         message: 'pendaftaran telah berhasil, silakan tunggu verifikasi',

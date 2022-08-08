@@ -28,6 +28,8 @@ export class Book {
   book_phone: string;
   @Column('simple-json')
   book_tags: { tags_category_id: number; tags_category_title: string };
+  @Column()
+  status: string;
   @CreateDateColumn()
   book_created_on: Date;
   @UpdateDateColumn()

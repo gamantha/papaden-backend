@@ -24,6 +24,8 @@ export class RecipientReg {
   regs_city: string;
   @Column()
   regs_edu: string;
+  @Column()
+  status: string;
   @CreateDateColumn()
   regs_created_on: Date;
   @UpdateDateColumn()

@@ -81,8 +81,8 @@ export class permsAuth {
   password: string;
   @Column()
   status: boolean;
-  @Column()
-  isvolunteer: string;
+  // @Column({ default: "" })
+  // isvolunteer: string;
   @CreateDateColumn()
   created_on: Date;
   @UpdateDateColumn()

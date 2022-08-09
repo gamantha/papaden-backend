@@ -28,7 +28,7 @@ export class Book {
   book_phone: string;
   @Column('simple-json')
   book_tags: { tags_category_id: number; tags_category_title: string };
-  @Column()
+  @Column({ default: "unvalidated" })
   status: string;
   @CreateDateColumn()
   book_created_on: Date;

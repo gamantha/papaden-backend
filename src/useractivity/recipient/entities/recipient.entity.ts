@@ -24,7 +24,7 @@ export class RecipientReg {
   regs_city: string;
   @Column()
   regs_edu: string;
-  @Column()
+  @Column({ default: "unvalidated" })
   status: string;
   @CreateDateColumn()
   regs_created_on: Date;

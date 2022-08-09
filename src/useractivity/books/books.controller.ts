@@ -8,11 +8,12 @@ import {
   Param,
   Query,
   DefaultValuePipe,
-  ParseIntPipe,
-} from '@nestjs/common';
+  ParseIntPipe, Patch
+} from "@nestjs/common";
 import { BooksService } from './books.service';
 import { CreateBookDto } from './dto/create-book.dto';
 import { JwtAuthGuard } from '../../auth/strategy/jwt-auth.guard';
+import { UpdateBookDto } from "./dto/update-book.dto";
 
 @Controller('/useractivity/books')
 export class BooksController {
@@ -22,6 +23,16 @@ export class BooksController {
   @Post('')
   async createBook(@Body() createBookDto: CreateBookDto) {
     return await this.booksService.createBook(createBookDto);
+  }
+
+  // Update Book
+  @UseGuards(JwtAuthGuard)
+  @Patch('update')
+  async updBook(
+    @Request() req: any,
+    @Body() updateBookDto: UpdateBookDto,
+  ) {
+    return await this.booksService.updBook(updateBookDto);
   }
 
   @UseGuards(JwtAuthGuard)

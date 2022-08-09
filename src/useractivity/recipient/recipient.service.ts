@@ -8,6 +8,8 @@ import {
   paginate,
   Pagination,
 } from 'nestjs-typeorm-paginate';
+import { UpdateBookDto } from "../books/dto/update-book.dto";
+import { UpdateRecipientDto } from "../recipient/dto/update-recipient.dto";
 
 @Injectable()
 export class RecipientService {
@@ -27,6 +29,33 @@ export class RecipientService {
       data: postRecipient,
     };
   }
+
+  async updRecipient(updateRecipientDto: UpdateRecipientDto) {
+    const book = await this.recipientRegRepository.find({
+      where: {
+        regs_id: updateRecipientDto.regs_id
+      },
+    });
+    // if (tempUser.length === 1) {
+    //   await this.tempsAuthRepository.update(userData, updateUseractivityDto);
+    //   return {
+    //     statusCode: HttpStatus.OK,
+    //     message: 'data member telah diupdate',
+    //   };
+    // } else {
+    //   await this.permsAuthRepository.update(userData, updateUseractivityDto);
+    //   return {
+    //     statusCode: HttpStatus.OK,
+    //     message: 'data member telah diupdate',
+    //   };
+    // }
+    await this.recipientRegRepository.update(updateRecipientDto.regs_id, updateRecipientDto);
+    return {
+      statusCode: HttpStatus.OK,
+      message: 'data member telah diupdate',
+    };
+  }
+
 
   async listsRecipient(
     rec_cat_title: string,

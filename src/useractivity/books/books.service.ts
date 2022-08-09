@@ -11,6 +11,7 @@ import {
 import { Born } from '../../dashboard/config/born/entities/born.entity';
 import { permsAuth } from '../../auth/entities/auth.entity';
 import * as moment from 'moment';
+import { UpdateBookDto } from "./dto/update-book.dto";
 
 @Injectable()
 export class BooksService {
@@ -32,6 +33,34 @@ export class BooksService {
       data: postBooks,
     };
   }
+
+  // Update Book
+  async updBook(updateBookDto: UpdateBookDto) {
+    const book = await this.bookRepository.find({
+      where: {
+        book_id: updateBookDto.book_id
+      },
+    });
+    // if (tempUser.length === 1) {
+    //   await this.tempsAuthRepository.update(userData, updateUseractivityDto);
+    //   return {
+    //     statusCode: HttpStatus.OK,
+    //     message: 'data member telah diupdate',
+    //   };
+    // } else {
+    //   await this.permsAuthRepository.update(userData, updateUseractivityDto);
+    //   return {
+    //     statusCode: HttpStatus.OK,
+    //     message: 'data member telah diupdate',
+    //   };
+    // }
+    await this.bookRepository.update(updateBookDto.book_id, updateBookDto);
+    return {
+      statusCode: HttpStatus.OK,
+      message: 'data member telah diupdate',
+    };
+  }
+
 
   async listsBooks(
     born_category_title: string,

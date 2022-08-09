@@ -26,10 +26,20 @@ export class AuthService {
         email: email,
       },
     });
+    const existingUsers = await this.permsAuthRepository.find({
+      where: {
+        email: email,
+      },
+    });
     if (nonVerUsers.length === 1) {
       return {
         statusCode: HttpStatus.OK,
         message: 'anggota sedang dalam review atau menunggu verifikasi',
+      };
+    } else if (existingUsers.length === 1) {
+      return {
+        statusCode: HttpStatus.OK,
+        message: 'email ini sudah terdaftar',
       };
     } else {
       const signupTemp = this.tempsAuthRepository.create(tempsAuthDto);

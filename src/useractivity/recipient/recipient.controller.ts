@@ -7,11 +7,13 @@ import {
   Param,
   Query,
   DefaultValuePipe,
-  ParseIntPipe,
-} from '@nestjs/common';
+  ParseIntPipe, Patch, Request
+} from "@nestjs/common";
 import { RecipientService } from './recipient.service';
 import { CreateRecipientDto } from './dto/create-recipient.dto';
 import { JwtAuthGuard } from '../../auth/strategy/jwt-auth.guard';
+import { UpdateBookDto } from "../books/dto/update-book.dto";
+import { UpdateRecipientDto } from "../recipient/dto/update-recipient.dto";
 
 @Controller('/useractivity/recipient')
 export class RecipientController {
@@ -21,6 +23,16 @@ export class RecipientController {
   @Post('')
   async registerRecipient(@Body() createRecipientDto: CreateRecipientDto) {
     return await this.recipientService.registerRecipient(createRecipientDto);
+  }
+
+  // Update Recipient
+  @UseGuards(JwtAuthGuard)
+  @Patch('update')
+  async updRecipient(
+    @Request() req: any,
+    @Body() updateRecipientDto: UpdateRecipientDto,
+  ) {
+    return await this.recipientService.updRecipient(updateRecipientDto);
   }
 
   @UseGuards(JwtAuthGuard)

@@ -36,7 +36,7 @@ export class AuthService {
       await this.tempsAuthRepository.save(signupTemp);
       return {
         statusCode: HttpStatus.OK,
-        message: 'pendaftaran telah berhasil, silakan tunggu verifikasi',
+        message: 'pendaftaran telah berhasil',
         data: signupTemp,
       };
     }

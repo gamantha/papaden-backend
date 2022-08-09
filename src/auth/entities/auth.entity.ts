@@ -36,8 +36,8 @@ export class tempsAuth {
   password: string;
   @Column('boolean', { default: false })
   status = false;
-  @Column()
-  isvolunteer: string;
+  // @Column({ default: "" })
+  // isvolunteer: string;
   @CreateDateColumn()
   created_on: Date;
   @UpdateDateColumn()

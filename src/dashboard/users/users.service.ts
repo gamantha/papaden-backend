@@ -76,7 +76,7 @@ export class UsersService {
       await this.tempsAuthRepository.save(regsTempUsers);
       return {
         statusCode: HttpStatus.OK,
-        message: 'pendaftaran telah berhasil, silakan tunggu verifikasi',
+        message: 'pendaftaran telah berhasil',
         data: regsTempUsers,
       };
     }

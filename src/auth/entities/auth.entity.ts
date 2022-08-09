@@ -36,8 +36,6 @@ export class tempsAuth {
   password: string;
   @Column('boolean', { default: false })
   status = false;
-  // @Column({ default: "" })
-  // isvolunteer: string;
   @CreateDateColumn()
   created_on: Date;
   @UpdateDateColumn()
@@ -81,8 +79,8 @@ export class permsAuth {
   password: string;
   @Column()
   status: boolean;
-  // @Column({ default: "" })
-  // isvolunteer: string;
+  @Column({ default: "" })
+  isvolunteer: string;
   @CreateDateColumn()
   created_on: Date;
   @UpdateDateColumn()

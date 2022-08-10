@@ -25,8 +25,6 @@ export class BooksController {
     return await this.booksService.createBook(createBookDto);
   }
 
-<<<<<<< HEAD
-=======
   // Update Book
   @UseGuards(JwtAuthGuard)
   @Patch('update')
@@ -38,7 +36,6 @@ export class BooksController {
   }
 
   @UseGuards(JwtAuthGuard)
->>>>>>> a470d2bda7b3dc3f37325d60c0ac529a3df45743
   @Get('')
   async listsBooks(
     @Query('born_category_title') born_category_title: string,

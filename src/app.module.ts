@@ -7,6 +7,9 @@ import { AuthModule } from './auth/auth.module';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { UseractivityModule } from './useractivity/useractivity.module';
 import * as Joi from 'joi';
+import { MailerModule } from '@nestjs-modules/mailer';
+import { PugAdapter } from '@nestjs-modules/mailer/dist/adapters/pug.adapter';
+import { MailModule } from './mail/mail.module';
 
 const ENV = process.env.NODE_ENV;
 
@@ -32,6 +35,20 @@ const ENV = process.env.NODE_ENV;
     AuthModule,
     DashboardModule,
     UseractivityModule,
+    MailerModule.forRoot({
+      transport: 'smtps://user@domain.com:pass@smtp.domain.com',
+      defaults: {
+        from: '"papaden-admin" <modules@nestjs.com>',
+      },
+      template: {
+        dir: __dirname + '/templates',
+        adapter: new PugAdapter(),
+        options: {
+          strict: true,
+        },
+      },
+    }),
+    MailModule,
   ],
   controllers: [AppController],
   providers: [AppService],

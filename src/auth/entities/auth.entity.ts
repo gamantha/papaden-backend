@@ -28,7 +28,7 @@ export class tempsAuth {
     nullable: true,
   })
   sex_category_title: string;
-  @Column({ unique: true })
+  @Column({ nullable: true })
   phone: string;
   @Column({ unique: true })
   email: string;
@@ -64,14 +64,15 @@ export class permsAuth {
   })
   born_city: string;
   @Column('datetime', {
-    nullable: false,
+    nullable: true,
   })
   born_date: Date;
   @Column({
-    nullable: false,
+    nullable: true,
   })
   sex_category_title: string;
-  @Column({ unique: true })
+  // @Column({ unique: true })
+  @Column({ nullable: true })
   phone: string;
   @Column({ unique: true })
   email: string;

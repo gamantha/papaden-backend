@@ -1,4 +1,4 @@
-import { HttpStatus, Injectable, UnauthorizedException } from '@nestjs/common';
+import { Body, HttpStatus, Injectable, Patch, Request, UnauthorizedException, UseGuards } from "@nestjs/common";
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
@@ -7,6 +7,9 @@ import { TempsAuthDto } from './dto/temps-auth.dto';
 import { VerifyAuthDto } from './dto/verify-auth.dto';
 import { Sex } from '../dashboard/config/sex/entities/sex.entity';
 import { MailService } from './../mail/mail.service';
+import crypto from "crypto";
+import { JwtAuthGuard } from "./strategy/jwt-auth.guard";
+import { UpdateUseractivityDto } from "../useractivity/dto/update-useractivity.dto";
 
 
 @Injectable()
@@ -24,6 +27,12 @@ export class AuthService {
   // Signup
   async create(tempsAuthDto: TempsAuthDto) {
     const { email } = tempsAuthDto;
+    // const crypto = require('crypto');
+
+    // const randomString1 = crypto.randomBytes(4).toString('hex');
+    // console.log(randomString1);
+
+
     const nonVerUsers = await this.tempsAuthRepository.find({
       where: {
         email: email,
@@ -34,7 +43,7 @@ export class AuthService {
         email: email,
       },
     });
-    await this.mailService.sendUserConfirmation(tempsAuthDto, "check");
+
     if (nonVerUsers.length === 1) {
       return {
         statusCode: HttpStatus.OK,
@@ -46,9 +55,10 @@ export class AuthService {
         message: 'email ini sudah terdaftar',
       };
     } else {
+      // tempsAuthDto.reg_token = randomString1;
       const signupTemp = this.tempsAuthRepository.create(tempsAuthDto);
-      await this.mailService.sendUserConfirmation(tempsAuthDto, "wqqwq");
       await this.tempsAuthRepository.save(signupTemp);
+      await this.mailService.sendUserConfirmation(signupTemp);
       return {
         statusCode: HttpStatus.OK,
         message: 'pendaftaran telah berhasil',
@@ -97,6 +107,9 @@ export class AuthService {
     if (!(await user?.validatePassword(password))) {
       throw new UnauthorizedException();
     }
+    if (user.status == 0) {
+      throw new UnauthorizedException();
+    }
     return user;
   }
 
@@ -108,5 +121,27 @@ export class AuthService {
       message: 'list gender telah berhasil didapatkan',
       data: sexVals,
     };
+  }
+
+  // Sex
+  async verify(email: string, token: string) {
+    const userTemps = await this.tempsAuthRepository.findOne({
+      where: {
+        email: email,
+      },
+    });
+    if (userTemps.reg_token == token) {
+      await this.tempsAuthRepository.update(userTemps.id, { status: true });
+      return {
+        statusCode: HttpStatus.OK,
+        message: 'VERIFY OK'
+      };
+    } else {
+      return {
+        statusCode: HttpStatus.UNAUTHORIZED,
+        message: 'Wrong Token'
+      };
+    }
+
   }
 }

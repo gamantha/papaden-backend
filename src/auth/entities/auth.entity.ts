@@ -9,6 +9,8 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import * as bcrypt from 'bcrypt';
+import crypto from "crypto";
+import cryptoconst from "crypto";
 
 @Entity('temps_auth')
 export class tempsAuth {
@@ -40,7 +42,8 @@ export class tempsAuth {
   created_on: Date;
   @UpdateDateColumn()
   updated_on: Date;
-
+  @Column({ nullable: true })
+  reg_token: string;
   @BeforeInsert()
   @BeforeUpdate()
   async hashPassword() {
@@ -50,6 +53,13 @@ export class tempsAuth {
   async validatePassword(password: string): Promise<boolean> {
     return bcrypt.compare(password, this.password);
   }
+  @BeforeInsert()
+  async get_reg_token(){
+    const cryptoconst = require('crypto');
+    this.reg_token = cryptoconst.randomBytes(4).toString('hex');
+    return this.reg_token;
+  }
+
 }
 
 @Entity('perms_auth')

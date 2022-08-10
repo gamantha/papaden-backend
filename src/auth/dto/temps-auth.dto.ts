@@ -44,4 +44,6 @@ export class TempsAuthDto {
     message: 'password too weak',
   })
   password: string;
+  @IsOptional()
+  reg_token: string;
 }

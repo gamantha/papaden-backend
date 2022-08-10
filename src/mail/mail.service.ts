@@ -7,13 +7,13 @@ import { TempsAuthDto } from '../auth/dto/temps-auth.dto';
 export class MailService {
   constructor(private mailerService: MailerService) {}
 
-  async sendUserConfirmation(tempsAuthDto: TempsAuthDto, token: string) {
-    const url = `example.com/auth/confirm?token=${token}`;
-
+  async sendUserConfirmation(tempsAuthDto: TempsAuthDto) {
+    console.log(tempsAuthDto.reg_token);
+    const url = `https://api-devs.papaden.org/auth/verify/${tempsAuthDto.email}/${tempsAuthDto.reg_token}`;
     await this.mailerService.sendMail({
       to: tempsAuthDto.email,
-      from: '"Support Team" <support@example.com>',
-      subject: 'Welcome to Nice App! Confirm your Email',
+      from: '"Papaden CS" <cs@papaden.org>',
+      subject: 'Konfirmasi Registrasi Aplikasi Papaden',
       template: './confirmation',
       context: {
         name: tempsAuthDto.fullname,

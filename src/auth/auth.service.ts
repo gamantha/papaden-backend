@@ -6,6 +6,8 @@ import { permsAuth, tempsAuth } from './entities/auth.entity';
 import { TempsAuthDto } from './dto/temps-auth.dto';
 import { VerifyAuthDto } from './dto/verify-auth.dto';
 import { Sex } from '../dashboard/config/sex/entities/sex.entity';
+import { MailService } from './../mail/mail.service';
+
 
 @Injectable()
 export class AuthService {
@@ -17,6 +19,7 @@ export class AuthService {
     private permsAuthRepository: Repository<permsAuth>,
     @InjectRepository(Sex)
     private sexRepository: Repository<Sex>,
+    private mailService: MailService,
   ) {}
   // Signup
   async create(tempsAuthDto: TempsAuthDto) {
@@ -31,6 +34,7 @@ export class AuthService {
         email: email,
       },
     });
+    await this.mailService.sendUserConfirmation(tempsAuthDto, "check");
     if (nonVerUsers.length === 1) {
       return {
         statusCode: HttpStatus.OK,
@@ -43,6 +47,7 @@ export class AuthService {
       };
     } else {
       const signupTemp = this.tempsAuthRepository.create(tempsAuthDto);
+      await this.mailService.sendUserConfirmation(tempsAuthDto, "wqqwq");
       await this.tempsAuthRepository.save(signupTemp);
       return {
         statusCode: HttpStatus.OK,

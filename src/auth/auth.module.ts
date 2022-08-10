@@ -8,6 +8,7 @@ import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { permsAuth, tempsAuth } from './entities/auth.entity';
 import { Sex } from '../dashboard/config/sex/entities/sex.entity';
+import { MailModule } from '../mail/mail.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { Sex } from '../dashboard/config/sex/entities/sex.entity';
       }),
       inject: [ConfigService],
     }),
+    MailModule,
   ],
   controllers: [AuthController],
   providers: [AuthService, JwtStrategy],

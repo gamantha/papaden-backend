@@ -26,7 +26,8 @@ export class TempsAuthDto {
   @IsOptional()
   @ApiProperty({ enum: ['laki-laki', 'perempuan'] })
   sex_category_title: string;
-  @IsPhoneNumber()
+  // @IsPhoneNumber()
+  @IsOptional()
   @ApiProperty({
     example: 'e.g +62 888 8888 8888',
   })

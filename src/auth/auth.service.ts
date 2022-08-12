@@ -123,7 +123,7 @@ export class AuthService {
       if(isnew) {
         throw new HttpException('Silahkan periksa mailbox anda untuk verifikasi', HttpStatus.UNAUTHORIZED)
       } else {
-        throw new HttpException('Akses sedang menunggu verifikasi data oleh admin', HttpStatus.UNAUTHORIZED)
+        // throw new HttpException('Akses sedang menunggu verifikasi data oleh admin', HttpStatus.UNAUTHORIZED)
       }
     }
     return user;

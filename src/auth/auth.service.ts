@@ -1,4 +1,13 @@
-import { Body, HttpStatus, Injectable, Patch, Request, UnauthorizedException, UseGuards } from "@nestjs/common";
+import {
+  Body,
+  HttpException,
+  HttpStatus,
+  Injectable,
+  Patch,
+  Request,
+  UnauthorizedException,
+  UseGuards
+} from "@nestjs/common";
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
@@ -47,7 +56,7 @@ export class AuthService {
     if (nonVerUsers.length === 1) {
       return {
         statusCode: HttpStatus.OK,
-        message: 'anggota sedang dalam review atau menunggu verifikasi',
+        message: 'email sedang dalam review atau menunggu verifikasi',
       };
     } else if (existingUsers.length === 1) {
       return {
@@ -61,7 +70,7 @@ export class AuthService {
       await this.mailService.sendUserConfirmation(signupTemp);
       return {
         statusCode: HttpStatus.OK,
-        message: 'pendaftaran telah berhasil',
+        message: 'Silahkan periksa mailbox anda untuk verifikasi',
         data: signupTemp,
       };
     }
@@ -98,19 +107,62 @@ export class AuthService {
     });
 
     let user;
+    let isnew;
     if (userTemps) {
       user = userTemps;
+      isnew = true;
     } else {
       user = userPerms;
+      isnew = false;
     }
 
     if (!(await user?.validatePassword(password))) {
       throw new UnauthorizedException();
     }
     if (user.status == 0) {
-      throw new UnauthorizedException();
+      if(isnew) {
+        throw new HttpException('Silahkan periksa mailbox anda untuk verifikasi', HttpStatus.UNAUTHORIZED)
+      } else {
+        throw new HttpException('Akses sedang menunggu verifikasi data oleh admin', HttpStatus.UNAUTHORIZED)
+      }
     }
     return user;
+  }
+
+  async valTempUsers(vals: any) {
+    console.log("validating");
+    let emailListsSuccess: any = [];
+    const valsTempUsers = await this.tempsAuthRepository.findOne({
+      where: {
+        email: vals.email,
+      },
+    });
+    if (valsTempUsers) {
+      console.log("validating 1");
+      await this.tempsAuthRepository
+        .createQueryBuilder()
+        .insert()
+        .into('perms_auth')
+        .values({
+          fullname: valsTempUsers.fullname,
+          born_city: valsTempUsers.born_city,
+          born_date: valsTempUsers.born_date,
+          sex_category_title: valsTempUsers.sex_category_title,
+          phone: valsTempUsers.phone,
+          email: valsTempUsers.email,
+          password: valsTempUsers.password,
+          status: true,
+        })
+        .execute();
+      emailListsSuccess += vals.email + ', ';
+      console.log(valsTempUsers.email);
+      await this.tempsAuthRepository.remove(valsTempUsers);
+    }
+
+    return {
+      statusCode: HttpStatus.OK,
+      // dataSuccess: emailListsSuccess,
+    };
   }
 
   // Sex
@@ -131,7 +183,8 @@ export class AuthService {
       },
     });
     if (userTemps.reg_token == token) {
-      await this.tempsAuthRepository.update(userTemps.id, { status: true });
+      await this.valTempUsers(userTemps);
+      // await this.tempsAuthRepository.update(userTemps.id, { status: true });
       return {
         statusCode: HttpStatus.OK,
         message: 'VERIFY OK'
@@ -144,4 +197,6 @@ export class AuthService {
     }
 
   }
+
+
 }

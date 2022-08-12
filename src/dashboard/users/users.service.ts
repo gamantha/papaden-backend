@@ -76,7 +76,7 @@ export class UsersService {
       await this.tempsAuthRepository.save(tempsAuthDto);
       return {
         statusCode: HttpStatus.OK,
-        message: 'pendaftaran telah berhasil',
+        message: 'pendaftaran telah berhasil. Silahkan periksa mailbox anda untuk verifikasi email',
         data: regsTempUsers,
       };
     }

@@ -10,13 +10,13 @@ import { join } from 'path';
       // transport: 'smtps://user@example.com:topsecret@smtp.example.com',
       // or
       transport: {
-        host: 'smtp.gmail.com',
+        host: 'mail.papaden.org',
         port: 465,
         ignoreTLS: true,
         secure: true,
         auth: {
-          user: "renowijoyo@gamantha.com",
-          pass: "RAN4ever#"
+          user: "cs@papaden.org",
+          pass: "p4p4d3n!"
         },
       },
       defaults: {

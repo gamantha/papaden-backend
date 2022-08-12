@@ -11,10 +11,12 @@ import {
 import * as bcrypt from 'bcrypt';
 import crypto from "crypto";
 import cryptoconst from "crypto";
+import { Transform } from "class-transformer";
 
 @Entity('temps_auth')
 export class tempsAuth {
   @PrimaryGeneratedColumn()
+  // @Transform(({ value }) => (value).toString())
   id: number;
   @Column()
   fullname: string;

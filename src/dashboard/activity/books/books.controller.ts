@@ -3,9 +3,9 @@ import {
   DefaultValuePipe,
   Get,
   Param,
-  ParseIntPipe,
-  Query,
-} from '@nestjs/common';
+  ParseIntPipe, ParseUUIDPipe,
+  Query
+} from "@nestjs/common";
 import { BooksService } from './books.service';
 
 @Controller('/dashboard/activity/books')

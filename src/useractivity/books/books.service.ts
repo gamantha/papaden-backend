@@ -26,6 +26,7 @@ export class BooksService {
 
   async createBook(createBookDto: CreateBookDto) {
     const postBooks = await this.bookRepository.create(createBookDto);
+    console.log(createBookDto.book_date);
     await this.bookRepository.save(postBooks);
     return {
       statusCode: HttpStatus.OK,
@@ -35,12 +36,13 @@ export class BooksService {
   }
 
   // Update Book
-  async updBook(updateBookDto: UpdateBookDto) {
+  async updBook(updateBookDto: UpdateBookDto, req:any) {
     const book = await this.bookRepository.find({
       where: {
         book_id: updateBookDto.book_id
       },
     });
+
     // if (tempUser.length === 1) {
     //   await this.tempsAuthRepository.update(userData, updateUseractivityDto);
     //   return {

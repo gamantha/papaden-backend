@@ -8,11 +8,12 @@ import {
   Delete,
   Query,
   DefaultValuePipe,
-  ParseIntPipe,
-} from '@nestjs/common';
+  ParseIntPipe, UseGuards, Request
+} from "@nestjs/common";
 import { ConsultantService } from './consultant.service';
 import { CreateConsultantDto } from './dto/create-consultant.dto';
 import { UpdateConsultantDto } from './dto/update-consultant.dto';
+import { JwtAuthGuard } from "../../auth/strategy/jwt-auth.guard";
 
 @Controller('/dashboard/consultant')
 export class ConsultantController {
@@ -36,9 +37,14 @@ export class ConsultantController {
     );
   }
   // Create Consultant
+  @UseGuards(JwtAuthGuard)
   @Post('')
-  async createConsultant(@Body() createConsultantDto: CreateConsultantDto) {
-    return await this.consultantService.createConsultant(createConsultantDto);
+  async createConsultant(@Request() req: any, @Body() createConsultantDto: CreateConsultantDto, ) {
+    console.log(req.user.userId)
+    return await this.consultantService.createConsultant(
+      createConsultantDto,
+      req,
+    );
   }
   // Update Consultant
   @Patch(':consultant_id')

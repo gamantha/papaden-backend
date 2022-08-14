@@ -94,6 +94,8 @@ export class permsAuth {
   status: boolean;
   @Column({ default: "new" })
   isvolunteer: string;
+  @Column({ default: "new" })
+  isrecipient: string;
   @CreateDateColumn()
   created_on: Date;
   @UpdateDateColumn()

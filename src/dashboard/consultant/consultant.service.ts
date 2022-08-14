@@ -27,11 +27,15 @@ export class ConsultantService {
     return await paginate<Consultant>(queryBuilder, options);
   }
   // Create Consultant
-  async createConsultant(createConsultantDto: CreateConsultantDto) {
+  async createConsultant(createConsultantDto: CreateConsultantDto, req:any) {
+    console.log(req.user);
     const { consultant_phone } = createConsultantDto;
+    // const { user_id } = req.user.userId;
+
     const regsConsultant = await this.consultantRepository.find({
       where: {
-        consultant_phone: consultant_phone,
+        // consultant_phone: consultant_phone,
+        user_id: req.user.userId,
       },
     });
 
@@ -41,8 +45,12 @@ export class ConsultantService {
         message: 'konsultan telah berada di dalam lists',
       };
     } else {
+      createConsultantDto.user_id = req.user.userId;
       const valsConsultant =
         this.consultantRepository.create(createConsultantDto);
+      // console.log("vals");
+      // console.log(user_id);
+      // valsConsultant.user_id = user_id;
       await this.consultantRepository.save(valsConsultant);
       return {
         statusCode: HttpStatus.OK,

@@ -39,4 +39,6 @@ export class UpdateUseractivityDto extends PartialType(CreateUseractivityDto) {
   email: string;
   @IsOptional()
   isvolunteer: string;
+  @IsOptional()
+  isrecipient: string;
 }

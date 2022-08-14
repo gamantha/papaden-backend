@@ -12,6 +12,7 @@ import { RecipientModule } from './recipient/recipient.module';
 import { LocalService } from './local/local.service';
 import { profilImage } from './entities/useractivity.entity';
 import { ConfigModule } from '@nestjs/config';
+import { MailModule } from '../mail/mail.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { ConfigModule } from '@nestjs/config';
     ConfigModule,
     BooksModule,
     RecipientModule,
+    MailModule,
   ],
   controllers: [UseractivityController],
   providers: [UseractivityService, LocalService],

@@ -5,6 +5,10 @@ export class Consultant {
   @PrimaryGeneratedColumn()
   @Generated('uuid')
   consultant_id: string;
+  @Column({
+    nullable:true,
+  })
+  user_id: string;
   @Column()
   consultant_fullname: string;
   @Column()

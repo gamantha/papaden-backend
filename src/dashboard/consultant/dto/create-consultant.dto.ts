@@ -20,4 +20,7 @@ export class CreateConsultantDto {
   @IsOptional()
   @ApiProperty({ example: 'e.g. //host/image/image_id' })
   consultant_profil_url: string;
+  @IsOptional()
+  @ApiProperty()
+  user_id: string;
 }

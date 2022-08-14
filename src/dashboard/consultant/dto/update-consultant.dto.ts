@@ -1,6 +1,6 @@
 import { ApiProperty, PartialType } from '@nestjs/swagger';
 import { CreateConsultantDto } from './create-consultant.dto';
-import { IsNotEmpty } from 'class-validator';
+import { IsNotEmpty, IsOptional } from "class-validator";
 
 export class UpdateConsultantDto extends PartialType(CreateConsultantDto) {
   @IsNotEmpty()
@@ -18,4 +18,7 @@ export class UpdateConsultantDto extends PartialType(CreateConsultantDto) {
   @IsNotEmpty()
   @ApiProperty({ example: 'e.g. +62 888 8888 8888' })
   consultant_phone: string;
+  @IsOptional()
+  @ApiProperty({ })
+  user_id: string;
 }

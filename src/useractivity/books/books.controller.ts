@@ -14,6 +14,7 @@ import { BooksService } from './books.service';
 import { CreateBookDto } from './dto/create-book.dto';
 import { JwtAuthGuard } from '../../auth/strategy/jwt-auth.guard';
 import { UpdateBookDto } from "./dto/update-book.dto";
+import { UpdateUseractivityDto } from "../dto/update-useractivity.dto";
 
 @Controller('/useractivity/books')
 export class BooksController {
@@ -22,6 +23,8 @@ export class BooksController {
   @UseGuards(JwtAuthGuard)
   @Post('')
   async createBook(@Body() createBookDto: CreateBookDto) {
+    console.log("Create book");
+    console.log(createBookDto.book_date);
     return await this.booksService.createBook(createBookDto);
   }
 
@@ -32,8 +35,20 @@ export class BooksController {
     @Request() req: any,
     @Body() updateBookDto: UpdateBookDto,
   ) {
-    return await this.booksService.updBook(updateBookDto);
+    return await this.booksService.updBook(updateBookDto, req);
   }
+
+  // Update Book status
+  @UseGuards(JwtAuthGuard)
+  @Patch('updatestatus')
+  async updBookStatus(
+    @Request() req: any,
+    @Body() updateBookDto: UpdateBookDto,
+  ) {
+    return await this.booksService.updBook(updateBookDto, req);
+  }
+
+
 
   @UseGuards(JwtAuthGuard)
   @Get('')
@@ -53,5 +68,15 @@ export class BooksController {
       },
       search,
     );
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('user-info')
+  getUserInfo(
+  @Request() req: any,
+  // @Body() updateUseractivityDto: UpdateUseractivityDto,
+  ) {
+    console.log(req)
+    return req.user
   }
 }

@@ -11,6 +11,8 @@ import { profilImage } from './entities/useractivity.entity';
 import { UpdateUseractivityDto } from './dto/update-useractivity.dto';
 import { PasswordUseractivityDto } from './dto/password-useractivity.dto';
 import * as bcrypt from 'bcrypt';
+import { ProfilUseractivityDto } from "./dto/profil-useractivity.dto";
+import { MailService } from '../mail/mail.service';
 
 @Injectable()
 export class UseractivityService {
@@ -29,6 +31,7 @@ export class UseractivityService {
     private consultantRepository: Repository<Consultant>,
     @InjectRepository(profilImage)
     private profilImageRepository: Repository<profilImage>,
+    private mailService: MailService,
   ) {}
   // Get Profil
   async findProfil(vals: any) {
@@ -79,6 +82,56 @@ export class UseractivityService {
       };
     }
   }
+
+  // Update Recipient
+  async requestRecipient(
+    userData: any,
+    updateUseractivityDto: UpdateUseractivityDto,
+  ) {
+    const permUser = await this.permsAuthRepository.find({
+      where: {
+        id: userData,
+      },
+    });
+    if (permUser.length === 1) {
+      await this.permsAuthRepository.update(userData, updateUseractivityDto);
+      console.log(permUser);
+      await this.mailService.sendVerifyNotification(permUser[0]);
+      return {
+        statusCode: HttpStatus.OK,
+        message: 'data member telah diupdate',
+      };
+    } else {
+      return {
+        statusCode: HttpStatus.NOT_FOUND,
+        message: 'no user found',
+      };
+    }
+  }
+
+  // Update VOlunteer
+  async requestVolunteer(userData: any, updateUseractivityDto: UpdateUseractivityDto) {
+    console.log("request volunteer")
+    const permUser = await this.permsAuthRepository.find({
+      where: {
+        id: userData,
+      },
+    });
+    if (permUser.length === 1) {
+      await this.permsAuthRepository.update(userData, updateUseractivityDto);
+      return {
+        statusCode: HttpStatus.OK,
+        message: 'data member telah diupdate',
+      };
+    } else {
+      return {
+        statusCode: HttpStatus.NOT_FOUND,
+        message: 'no user found',
+      };
+    }
+  }
+
+
   // Upload Profil Image
   async avatarUpload(id: string, file: Express.Multer.File) {
     const avatarData = await this.profilImageRepository.find({
@@ -169,6 +222,9 @@ export class UseractivityService {
       );
     return await paginate<Consultant>(queryBuilder, options);
   }
+
+
+
   // Update Password
   async recoveryPassword(
     userData: any,

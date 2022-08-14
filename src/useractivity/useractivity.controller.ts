@@ -43,6 +43,36 @@ export class UseractivityController {
       updateUseractivityDto,
     );
   }
+
+  // Update volunteer
+  @UseGuards(JwtAuthGuard)
+  @Patch('requestvolunteer')
+  async requestVolunteer(
+    @Request() req: any,
+    @Body() updateUseractivityDto: UpdateUseractivityDto,
+  ) {
+    const userData = Object.values(req.user);
+    return await this.useractivityService.requestVolunteer(
+      userData,
+      updateUseractivityDto,
+    );
+  }
+
+  // Update recipient
+  @UseGuards(JwtAuthGuard)
+  @Patch('requestRecipient')
+  async requestrecipient(
+    @Request() req: any,
+    @Body() updateUseractivityDto: UpdateUseractivityDto,
+  ) {
+    const userData = Object.values(req.user);
+    return await this.useractivityService.requestRecipient(
+      userData,
+      updateUseractivityDto,
+    );
+  }
+
+
   // Update Password
   @UseGuards(JwtAuthGuard)
   @Patch('profil/password')

@@ -35,6 +35,18 @@ export class RecipientController {
     return await this.recipientService.updRecipient(updateRecipientDto);
   }
 
+  // Update Recipient Status
+  @UseGuards(JwtAuthGuard)
+  @Patch('updatestatus')
+  async updRecipientStatus(
+    @Request() req: any,
+    @Body() updateRecipientDto: UpdateRecipientDto,
+  ) {
+    return await this.recipientService.updRecipient(updateRecipientDto);
+  }
+
+
+
   @UseGuards(JwtAuthGuard)
   @Get(':rec_cat_title')
   async listsRecipient(

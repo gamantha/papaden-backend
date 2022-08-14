@@ -21,4 +21,31 @@ export class MailService {
       },
     });
   }
+
+  async sendVerifyNotification(permUser: permsAuth) {
+    await this.mailerService.sendMail({
+      to: permUser.email,
+      from: '"Papaden CS" <cs@papaden.org>',
+      subject: 'Request verification',
+      template: './request',
+      context: {
+        name: permUser.fullname,
+      },
+    });
+
+
+    await this.mailerService.sendMail({
+      to: '"Papaden CS" <cs@papaden.org>',
+      from: '"Papaden CS" <cs@papaden.org>',
+      subject: 'Request verification',
+      template: './request_2',
+      context: {
+        name: permUser.fullname,
+      },
+    });
+
+
+  }
+
+
 }

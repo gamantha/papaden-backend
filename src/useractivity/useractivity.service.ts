@@ -208,8 +208,29 @@ export class UseractivityService {
       data: getRecipient,
     };
   }
-  // Get Consultant
-  async findConsultant(options: IPaginationOptions, search: string) {
+
+  // Get Consultant by user_id
+  async findConsultant(vals: any) {
+    console.log("consulta");
+    console.log(vals);
+    const consultantUser = await this.consultantRepository.find({
+      where: {
+        user_id: vals,
+      },
+    });
+    if (consultantUser.length === 1) {
+      return consultantUser;
+    } else {
+      return {
+        statusCode: HttpStatus.NOT_FOUND,
+        message: 'no user',
+      };
+    }
+  }
+
+
+  // Get Consultants
+  async findConsultants(options: IPaginationOptions, search: string) {
     const searchKeys = search;
     const queryBuilder = this.consultantRepository
       .createQueryBuilder('admin_consultant')
@@ -222,7 +243,6 @@ export class UseractivityService {
       );
     return await paginate<Consultant>(queryBuilder, options);
   }
-
 
 
   // Update Password

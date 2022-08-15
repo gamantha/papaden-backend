@@ -143,22 +143,38 @@ export class UseractivityController {
   async findRecipient() {
     return await this.useractivityService.findRecipient();
   }
-  // Get Consultant
+  // Get Consultant by token
   @UseGuards(JwtAuthGuard)
   @Get('consultant')
   async getConsultant(
+  @Request() req: any,
+  ) {
+    console.log("get consultant");
+    console.log(req.user);
+  const userData = Object.values(req.user);
+  return await this.useractivityService.findConsultant(
+    userData
+  );
+  }
+
+  // Get Consultants list
+  @UseGuards(JwtAuthGuard)
+  @Get('consultants')
+  async getConsultants(
     @Query('search') search = '',
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page = 1,
     @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit = 10,
   ) {
     limit = limit > 100 ? 100 : limit;
-    return await this.useractivityService.findConsultant(
+    return await this.useractivityService.findConsultants(
       {
         page,
         limit,
-        route: 'consultant',
+        route: 'consultants',
       },
       search,
     );
   }
+
+
 }

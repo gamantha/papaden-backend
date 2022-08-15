@@ -11,6 +11,7 @@ import { MailerModule } from '@nestjs-modules/mailer';
 import { PugAdapter } from '@nestjs-modules/mailer/dist/adapters/pug.adapter';
 import { MailModule } from './mail/mail.module';
 
+
 const ENV = process.env.NODE_ENV;
 
 @Module({

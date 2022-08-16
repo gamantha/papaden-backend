@@ -10,6 +10,9 @@ import * as Joi from 'joi';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { PugAdapter } from '@nestjs-modules/mailer/dist/adapters/pug.adapter';
 import { MailModule } from './mail/mail.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
+
 
 
 const ENV = process.env.NODE_ENV;
@@ -32,6 +35,9 @@ const ENV = process.env.NODE_ENV;
       entities: [__dirname + '/../**/*.entity.js'],
       synchronize: true,
       logging: true,
+    }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'image'),
     }),
     AuthModule,
     DashboardModule,

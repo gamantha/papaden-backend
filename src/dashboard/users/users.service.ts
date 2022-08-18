@@ -147,6 +147,7 @@ export class UsersService {
   }
 
   async getPermUsersIds(id: string) {
+    console.log(id);
     return await this.permsAuthRepository.find({
       where: {
         id: id,

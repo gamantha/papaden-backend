@@ -81,6 +81,8 @@ export class UsersController {
   }
   @Get('member/:id')
   async getPermUsersIds(@Param('id') id: string) {
+    console.log("member / id");
+    console.log(id);
     return await this.usersService.getPermUsersIds(id);
   }
   // Delete Member

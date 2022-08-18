@@ -6,6 +6,7 @@ import {
   IsOptional,
   IsPhoneNumber,
 } from 'class-validator';
+import { Column } from "typeorm";
 
 export class UpdateUserDto extends PartialType(VerifyUserDto) {
   @ApiProperty({
@@ -36,4 +37,12 @@ export class UpdateUserDto extends PartialType(VerifyUserDto) {
   })
   @IsEmail()
   email: string;
+  @IsOptional()
+  @ApiProperty({
+    example: 'e.g. 0000-00-00 00:00:00',
+  })
+  @IsNotEmpty()
+  isvolunteer: string;
+  @IsNotEmpty()
+  isrecipient: string;
 }

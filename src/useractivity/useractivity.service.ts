@@ -47,6 +47,16 @@ export class UseractivityService {
       },
     });
 
+    const profilImage = await this.profilImageRepository.findOne({
+      where: {
+        id: vals,
+      },
+    });
+
+    console.log(profilImage.profil_filename)
+    // profilsPerm[0].imageurl = profilImage.profil_filename
+    // terakhir diatas ini tambahin profileImage
+
     if (profilsTemp.length === 1) {
       return {
         statusCode: HttpStatus.OK,
@@ -139,6 +149,19 @@ export class UseractivityService {
         id: id,
       },
     });
+    const authPerm = await this.permsAuthRepository.find({
+      where: {
+        id: id,
+      },
+    });
+
+    const consultant = await this.consultantRepository.find({
+      where: {
+        user_id: id,
+      },
+    });
+
+
     if (avatarData.length === 1) {
       await this.profilImageRepository
         .createQueryBuilder()
@@ -150,6 +173,32 @@ export class UseractivityService {
         })
         .where('id = :id', { id: id })
         .execute();
+
+      await this.permsAuthRepository
+        .createQueryBuilder()
+        .update('perms_auth')
+        .set({
+          imageurl: file.path,
+        })
+        .where('id = :id', { id: id })
+        .execute();
+
+      if (consultant.length === 1) {
+        await this.consultantRepository
+          .createQueryBuilder()
+          .update('admin_consultant')
+          .set({
+            consultant_profil_url: file.path,
+          })
+          .where('user_id = :id', { id: id })
+          .execute();
+
+      }
+
+      return {
+        statusCode: HttpStatus.OK,
+        message: 'profil image user telah berhasil diupdate',
+      };
     } else {
       await this.profilImageRepository
         .createQueryBuilder()
@@ -162,10 +211,31 @@ export class UseractivityService {
           profil_mimetype: file.mimetype,
         })
         .execute();
+
+      await this.permsAuthRepository
+        .createQueryBuilder()
+        .update('perms_auth')
+        .set({
+          imageurl: file.path,
+        })
+        .where('id = :id', { id: id })
+        .execute();
+      if (consultant.length === 1) {
+        await this.consultantRepository
+          .createQueryBuilder()
+          .update('admin_consultant')
+          .set({
+            consultant_profil_url: file.path,
+          })
+          .where('user_id = :id', { id: id })
+          .execute();
+
+      }
       return {
         statusCode: HttpStatus.OK,
         message: 'profil image user telah berhasil diupload',
       };
+
     }
   }
   // Get Profil Image
@@ -234,6 +304,7 @@ export class UseractivityService {
     const searchKeys = search;
     const queryBuilder = this.consultantRepository
       .createQueryBuilder('admin_consultant')
+      // .leftJoinAndSelect("admin_consultant.profilimage", "admin_consultant")
       .where(
         new Brackets((qb) => {
           qb.where('admin_consultant.consultant_fullname like :search', {

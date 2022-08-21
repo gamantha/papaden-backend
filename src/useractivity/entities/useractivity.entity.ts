@@ -1,4 +1,6 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Consultant } from "../../dashboard/consultant/entities/consultant.entity";
+import { permsAuth } from "../../auth/entities/auth.entity";
 
 export class Useractivity {}
 
@@ -14,4 +16,10 @@ export class profilImage {
   profil_path: string;
   @Column()
   profil_mimetype: string;
+
+
+  // @OneToOne(() => permsAuth)
+  // @JoinColumn()
+  // permsAuth: permsAuth
+
 }

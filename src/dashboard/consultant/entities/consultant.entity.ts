@@ -1,4 +1,15 @@
-import { Column, Entity, Generated, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  AfterLoad,
+  Column,
+  Entity,
+  Generated,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  OneToOne,
+  PrimaryGeneratedColumn
+} from "typeorm";
+import { profilImage, Useractivity } from "../../../useractivity/entities/useractivity.entity";
 
 @Entity('admin_consultant')
 export class Consultant {
@@ -6,8 +17,8 @@ export class Consultant {
   @Generated('uuid')
   consultant_id: string;
   @Column({
-    nullable:true,
-  })
+    nullable:true, unique: true
+})
   user_id: string;
   @Column()
   consultant_fullname: string;
@@ -23,4 +34,18 @@ export class Consultant {
     nullable: true,
   })
   consultant_profil_url: string;
+
+  @AfterLoad()
+  renameURL() {
+    if (this.consultant_profil_url != null) {
+      var url = this.consultant_profil_url.substr(5);
+      this.consultant_profil_url = "http://202.67.10.240:3001" + url.replace(/\\/g, "/")
+    }
+
+  }
+
+  // @ManyToOne(type => profilImage, profilimage => profilimage.id)
+  // @JoinColumn()
+  // profilimage: profilImage;
+
 }

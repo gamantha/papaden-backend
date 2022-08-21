@@ -4,14 +4,15 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  Generated,
+  Generated, JoinColumn, OneToMany, OneToOne,
   PrimaryGeneratedColumn,
-  UpdateDateColumn,
-} from 'typeorm';
+  UpdateDateColumn
+} from "typeorm";
 import * as bcrypt from 'bcrypt';
 import crypto from "crypto";
 import cryptoconst from "crypto";
 import { Transform } from "class-transformer";
+import { profilImage } from "../../useractivity/entities/useractivity.entity";
 
 @Entity('temps_auth')
 export class tempsAuth {
@@ -100,6 +101,17 @@ export class permsAuth {
   created_on: Date;
   @UpdateDateColumn()
   updated_on: Date;
+  // @OneToMany(type => profilImage, profilimage => profilimage.id)
+  // profilimages: profilImage[];
+  @Column()
+  imageurl: string;
+  // @JoinColumn()
+  // profil_image: profilImage
+  // @OneToMany(() => profilImage, (profile_image) => profile_image.id)
+
+
+  // @OneToMany(type => Photo, photo => photo.user)
+  // photos: Photo[];
   @BeforeInsert()
   @BeforeUpdate()
   async hashPassword() {

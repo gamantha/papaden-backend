@@ -103,7 +103,7 @@ export class permsAuth {
   updated_on: Date;
   // @OneToMany(type => profilImage, profilimage => profilimage.id)
   // profilimages: profilImage[];
-  @Column()
+  @Column({ default: null })
   imageurl: string;
   // @JoinColumn()
   // profil_image: profilImage

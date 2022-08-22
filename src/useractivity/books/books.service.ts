@@ -100,7 +100,8 @@ export class BooksService {
             search: '%' + searchKeys + '%',
           });
         }),
-      );
+      )
+      .orderBy('activity_book.book_id', 'DESC');
     return paginate<Book>(queryBuilder, options);
   }
 }

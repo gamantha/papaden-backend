@@ -53,7 +53,7 @@ export class UseractivityService {
       },
     });
 
-    console.log(profilImage.profil_filename)
+    // console.log(profilImage.profil_filename)
     // profilsPerm[0].imageurl = profilImage.profil_filename
     // terakhir diatas ini tambahin profileImage
 

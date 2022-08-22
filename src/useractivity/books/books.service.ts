@@ -64,7 +64,7 @@ export class BooksService {
   }
 
 
-  async listsBooks(
+  async listsBooks(userData: any,
     born_category_title: string,
     options: IPaginationOptions,
     search: string,
@@ -74,6 +74,8 @@ export class BooksService {
         born_category_title: born_category_title,
       },
     });
+    console.log("USER DATA");
+    console.log(userData[0]);
     const BooksIDs = new Date();
     const birth = new Date();
     const startDate = birth.setFullYear(
@@ -93,6 +95,9 @@ export class BooksService {
       .where('activity_book.born_date BETWEEN :stdate AND :endate', {
         stdate: ndVals,
         endate: sdVals,
+      })
+      .andWhere('activity_book.consultant_id like :consultant_id', {
+        consultant_id: userData[0],
       })
       .andWhere(
         new Brackets((qb) => {

@@ -16,6 +16,8 @@ export class BooksService {
 
   async getAdminBookLists(options: IPaginationOptions, search: string) {
     const searchKeys = search;
+    console.log("get books")
+    console.log(search)
     const booksQuery = this.bookAdminRepository
       .createQueryBuilder('activity_book')
       .where(

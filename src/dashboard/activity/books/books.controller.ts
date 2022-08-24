@@ -18,6 +18,7 @@ export class BooksController {
     @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit = 10,
     @Query('search') search = '',
   ) {
+
     limit = limit > 100 ? 100 : limit;
     return await this.booksService.getAdminBookLists(
       {

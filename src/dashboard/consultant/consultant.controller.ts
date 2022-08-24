@@ -19,6 +19,28 @@ import { JwtAuthGuard } from "../../auth/strategy/jwt-auth.guard";
 export class ConsultantController {
   constructor(private readonly consultantService: ConsultantService) {}
 
+
+  // Get Consultants list
+  @Get('consultants')
+  async getConsultants(
+    @Query('search') search = '',
+    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page = 1,
+    @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit = 10,
+  ) {
+    limit = limit > 100 ? 100 : limit;
+    return await this.consultantService.findConsultants(
+      {
+        page,
+        limit,
+        route: 'consultants',
+      },
+      search,
+    );
+  }
+
+
+
+
   // Get Consultant
   @Get('')
   async getConsultant(

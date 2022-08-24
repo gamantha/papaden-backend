@@ -59,6 +59,23 @@ export class ConsultantService {
       };
     }
   }
+
+  // Get Consultants
+  async findConsultants(options: IPaginationOptions, search: string) {
+    const searchKeys = search;
+    const queryBuilder = this.consultantRepository
+      .createQueryBuilder('admin_consultant')
+      // .leftJoinAndSelect("admin_consultant.profilimage", "admin_consultant")
+      .where(
+        new Brackets((qb) => {
+          qb.where('admin_consultant.consultant_fullname like :search', {
+            search: '%' + searchKeys + '%',
+          });
+        }),
+      );
+    return await paginate<Consultant>(queryBuilder, options);
+  }
+
   // Update Consultant
   async updateConsultant(
     consultant_id: string,

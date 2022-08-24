@@ -91,7 +91,7 @@ export class permsAuth {
   email: string;
   @Column()
   password: string;
-  @Column()
+  @Column({ default: true })
   status: boolean;
   @Column({ default: "new" })
   isvolunteer: string;

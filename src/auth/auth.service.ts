@@ -151,7 +151,7 @@ export class AuthService {
           phone: valsTempUsers.phone,
           email: valsTempUsers.email,
           password: valsTempUsers.password,
-          status: false,
+          status: true,
         })
         .execute();
       emailListsSuccess += vals.email + ', ';

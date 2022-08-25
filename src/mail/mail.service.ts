@@ -22,6 +22,24 @@ export class MailService {
     });
   }
 
+  async sendResetPassword(permAuth: permsAuth) {
+    console.log(permAuth.status);
+    const url = `https://papaden.org/resetpassword?email=${permAuth.email}&resetpasswordtoken=${permAuth.resetpasswordtoken}`;
+    await this.mailerService.sendMail({
+      to: permAuth.email,
+      from: '"Papaden CS" <cs@papaden.org>',
+      subject: 'Konfirmasi Reset Password Aplikasi Papaden',
+      template: './confirmation',
+      context: {
+        name: permAuth.fullname,
+        url,
+      },
+    });
+  }
+
+
+
+
   async sendVerifyNotification(permUser: permsAuth) {
     await this.mailerService.sendMail({
       to: permUser.email,

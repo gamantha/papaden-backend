@@ -19,6 +19,8 @@ import { MailService } from './../mail/mail.service';
 import crypto from "crypto";
 import { JwtAuthGuard } from "./strategy/jwt-auth.guard";
 import { UpdateUseractivityDto } from "../useractivity/dto/update-useractivity.dto";
+import * as bcrypt from "bcrypt";
+import { PasswordUseractivityDto } from "../useractivity/dto/password-useractivity.dto";
 
 
 @Injectable()
@@ -175,6 +177,84 @@ export class AuthService {
     };
   }
 
+  // resetPasswordRequest
+  async resetPasswordRequest(email: string) {
+    console.log(email)
+    const permUser = await this.permsAuthRepository.findOne({
+      where: {
+        email: email,
+      },
+    });
+    // return this.password;
+    if (permUser.status == true) {
+      console.log("user exist");
+      const password_token = await bcrypt.hash(email, 10);
+      console.log(password_token)
+      // permUser.resetpasswordtoken = await bcrypt.hash(email, 10);
+      await this.permsAuthRepository.update(
+        permUser.id, {
+          resetpasswordtoken: password_token
+        },
+      );
+      await this.mailService.sendResetPassword(permUser);
+      return {
+        statusCode: HttpStatus.OK,
+        message: 'User exist dan password request initiated',
+        // data: permUser,
+      };
+    } else {
+      return {
+        statusCode: HttpStatus.NOT_FOUND,
+        message: 'NOT FOUND',
+        // data: permUser,
+      };
+    }
+
+  }
+
+// new password
+  async newpassword(body: any,    passwordUseractivityDto: PasswordUseractivityDto,) {
+    const userPerms = await this.permsAuthRepository.findOne({
+      where: {
+        email: body.email,
+      },
+    });
+    const { password } = passwordUseractivityDto;
+    console.log(userPerms)
+    if (userPerms !== null) {
+      if (userPerms.resetpasswordtoken == body.resetpasswordtoken) {
+        console.log("token correct")
+        const passwordUpdate: string = await bcrypt.hash(password, 10);
+        await this.permsAuthRepository
+          .createQueryBuilder()
+          .update('perms_auth')
+          .set({
+            password: passwordUpdate,
+          })
+          .where('email = :email', { email: body.email })
+          .execute();
+        return {
+          statusCode: HttpStatus.OK,
+          message: 'password telah diupdate',
+        };
+      } else {
+        // console.log("token wromg")
+        // console.log(body.resetpasswordtoken)
+        return {
+          statusCode: HttpStatus.UNAUTHORIZED,
+          message: 'Wrong Token'
+        };
+      }
+
+
+    } else {
+      return {
+        statusCode: HttpStatus.UNAUTHORIZED,
+        message: 'Wrong Token'
+      };
+    }
+
+  }
   // Sex
   async verify(email: string, token: string) {
     const userTemps = await this.tempsAuthRepository.findOne({

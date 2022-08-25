@@ -97,6 +97,8 @@ export class permsAuth {
   isvolunteer: string;
   @Column({ default: "new" })
   isrecipient: string;
+  @Column()
+  resetpasswordtoken: string;
   @CreateDateColumn()
   created_on: Date;
   @UpdateDateColumn()

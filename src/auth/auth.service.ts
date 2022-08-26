@@ -186,7 +186,7 @@ export class AuthService {
       },
     });
     // return this.password;
-    if (permUser.status == true) {
+    if (permUser !== null) {
       console.log("user exist");
       const password_token = await bcrypt.hash(email, 10);
       console.log(password_token)

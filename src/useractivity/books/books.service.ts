@@ -24,9 +24,11 @@ export class BooksService {
     private permsAuthRepository: Repository<permsAuth>,
   ) {}
 
-  async createBook(createBookDto: CreateBookDto) {
+  async createBook(createBookDto: CreateBookDto, req : any) {
     const postBooks = await this.bookRepository.create(createBookDto);
     console.log(createBookDto.book_date);
+
+    await
     await this.bookRepository.save(postBooks);
     return {
       statusCode: HttpStatus.OK,

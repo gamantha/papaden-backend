@@ -22,10 +22,10 @@ export class BooksController {
 
   @UseGuards(JwtAuthGuard)
   @Post('')
-  async createBook(@Body() createBookDto: CreateBookDto) {
+  async createBook(@Request() req: any,@Body() createBookDto: CreateBookDto) {
     console.log("Create book");
     console.log(createBookDto.book_date);
-    return await this.booksService.createBook(createBookDto);
+    return await this.booksService.createBook(createBookDto, req);
   }
 
   // Update Book

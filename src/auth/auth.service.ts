@@ -196,7 +196,7 @@ export class AuthService {
           resetpasswordtoken: password_token
         },
       );
-      await this.mailService.sendResetPassword(permUser);
+      await this.mailService.sendResetPassword(permUser, password_token);
       return {
         statusCode: HttpStatus.OK,
         message: 'User exist dan password request initiated',

@@ -22,9 +22,9 @@ export class MailService {
     });
   }
 
-  async sendResetPassword(permAuth: permsAuth) {
+  async sendResetPassword(permAuth: permsAuth, resetpasswordtoken: string) {
     console.log(permAuth.status);
-    const url = `https://papaden.org/resetpassword?email=${permAuth.email}&resetpasswordtoken=${permAuth.resetpasswordtoken}`;
+    const url = `https://papaden.org/resetpassword?email=${permAuth.email}&resetpasswordtoken=${resetpasswordtoken}`;
     await this.mailerService.sendMail({
       to: permAuth.email,
       from: '"Papaden CS" <cs@papaden.org>',

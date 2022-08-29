@@ -59,7 +59,7 @@ export class RecipientService {
 
   async updRecipientStatus(updateRecipientDto: UpdateRecipientDto, req: any) {
     console.log(req.user)
-    const book = await this.recipientRegRepository.find({
+    const book = await this.recipientRegRepository.findOne({
       where: {
         regs_id: updateRecipientDto.regs_id
       },
@@ -77,7 +77,10 @@ export class RecipientService {
     //     message: 'data member telah diupdate',
     //   };
     // }
-    updateRecipientDto.regs_volunteer = req.user.userId
+    if (book.regs_volunteer === "") {
+      updateRecipientDto.regs_volunteer = req.user.userId
+    }
+
     await this.recipientRegRepository.update(updateRecipientDto.regs_id, updateRecipientDto);
     return {
       statusCode: HttpStatus.OK,

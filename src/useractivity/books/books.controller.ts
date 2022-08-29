@@ -45,7 +45,7 @@ export class BooksController {
     @Request() req: any,
     @Body() updateBookDto: UpdateBookDto,
   ) {
-    return await this.booksService.updBook(updateBookDto, req);
+    return await this.booksService.updBookStatus(updateBookDto, req);
   }
 
 

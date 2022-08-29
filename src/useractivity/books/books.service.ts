@@ -65,6 +65,35 @@ export class BooksService {
     };
   }
 
+  // Update Book
+  async updBookStatus(updateBookDto: UpdateBookDto, req:any) {
+    const book = await this.bookRepository.find({
+      where: {
+        book_id: updateBookDto.book_id
+      },
+    });
+
+    // if (tempUser.length === 1) {
+    //   await this.tempsAuthRepository.update(userData, updateUseractivityDto);
+    //   return {
+    //     statusCode: HttpStatus.OK,
+    //     message: 'data member telah diupdate',
+    //   };
+    // } else {
+    //   await this.permsAuthRepository.update(userData, updateUseractivityDto);
+    //   return {
+    //     statusCode: HttpStatus.OK,
+    //     message: 'data member telah diupdate',
+    //   };
+    // }
+
+    await this.bookRepository.update(updateBookDto.book_id, updateBookDto);
+    return {
+      statusCode: HttpStatus.OK,
+      message: 'data member telah diupdate',
+    };
+  }
+
 
   async listsBooks(userData: any,
     born_category_title: string,

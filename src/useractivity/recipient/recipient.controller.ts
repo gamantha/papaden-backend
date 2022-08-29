@@ -42,7 +42,7 @@ export class RecipientController {
     @Request() req: any,
     @Body() updateRecipientDto: UpdateRecipientDto,
   ) {
-    return await this.recipientService.updRecipient(updateRecipientDto, req);
+    return await this.recipientService.updRecipientStatus(updateRecipientDto, req);
   }
 
 

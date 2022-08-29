@@ -57,6 +57,34 @@ export class RecipientService {
     };
   }
 
+  async updRecipientStatus(updateRecipientDto: UpdateRecipientDto, req: any) {
+    console.log(req.user)
+    const book = await this.recipientRegRepository.find({
+      where: {
+        regs_id: updateRecipientDto.regs_id
+      },
+    });
+    // if (tempUser.length === 1) {
+    //   await this.tempsAuthRepository.update(userData, updateUseractivityDto);
+    //   return {
+    //     statusCode: HttpStatus.OK,
+    //     message: 'data member telah diupdate',
+    //   };
+    // } else {
+    //   await this.permsAuthRepository.update(userData, updateUseractivityDto);
+    //   return {
+    //     statusCode: HttpStatus.OK,
+    //     message: 'data member telah diupdate',
+    //   };
+    // }
+    updateRecipientDto.regs_volunteer = req.user.userId
+    await this.recipientRegRepository.update(updateRecipientDto.regs_id, updateRecipientDto);
+    return {
+      statusCode: HttpStatus.OK,
+      message: 'data member telah diupdate',
+    };
+  }
+
 
   async listsRecipient(
     rec_cat_title: string,

@@ -25,4 +25,6 @@ export class CreateRecipientDto {
   @ApiProperty({ example: 'e.g. smk' })
   @IsNotEmpty()
   regs_edu: string;
+  @ApiProperty({ example: 'e.g. 4259a708-cece-4f7d-8335-d85cb0328ece' })
+  regs_volunteer: string;
 }

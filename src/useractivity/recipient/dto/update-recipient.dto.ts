@@ -11,4 +11,6 @@ export class UpdateRecipientDto extends PartialType(CreateRecipientDto) {
   regs_id: number;
   @IsOptional()
   status: string;
+  @IsOptional()
+  regs_volunteer: string;
 }

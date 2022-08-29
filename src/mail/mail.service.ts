@@ -40,6 +40,35 @@ export class MailService {
 
 
 
+
+  async sendRequestNotification(permUser: permsAuth, msg : string) {
+    await this.mailerService.sendMail({
+      to: permUser.email,
+      from: '"Papaden CS" <cs@papaden.org>',
+      subject: 'Request verification',
+      template: './request_verification',
+      context: {
+        name: permUser.fullname,
+        msg : msg
+      },
+    });
+
+
+    await this.mailerService.sendMail({
+      to: '"Papaden CS" <cs@papaden.org>',
+      from: '"Papaden CS" <cs@papaden.org>',
+      subject: 'Request verification',
+      template: './request_verification',
+      context: {
+        name: permUser.fullname,
+        msg : msg
+      },
+    });
+
+
+  }
+
+
   async sendVerifyNotification(permUser: permsAuth) {
     await this.mailerService.sendMail({
       to: permUser.email,

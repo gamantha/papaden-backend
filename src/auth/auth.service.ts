@@ -267,7 +267,7 @@ export class AuthService {
       // await this.tempsAuthRepository.update(userTemps.id, { status: true });
       return {
         statusCode: HttpStatus.OK,
-        message: 'VERIFY OK'
+        message: 'VERIFICATION OK -> SUDAH DAPAT LOGIN'
       };
     } else {
       return {

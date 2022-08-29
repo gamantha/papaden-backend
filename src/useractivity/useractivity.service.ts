@@ -104,9 +104,10 @@ export class UseractivityService {
       },
     });
     if (permUser.length === 1) {
+      console.log("user found")
       await this.permsAuthRepository.update(userData, updateUseractivityDto);
       console.log(permUser);
-      await this.mailService.sendVerifyNotification(permUser[0]);
+      await this.mailService.sendRequestNotification(permUser[0], 'penerima bantuan');
       return {
         statusCode: HttpStatus.OK,
         message: 'data member telah diupdate',

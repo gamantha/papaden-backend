@@ -31,7 +31,7 @@ export class RecipientService {
   }
 
   async updRecipient(updateRecipientDto: UpdateRecipientDto, req: any) {
-    console.log(req.user.id)
+    console.log(req.user)
     const book = await this.recipientRegRepository.find({
       where: {
         regs_id: updateRecipientDto.regs_id

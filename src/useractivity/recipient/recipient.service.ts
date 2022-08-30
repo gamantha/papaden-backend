@@ -92,7 +92,7 @@ export class RecipientService {
   async listsRecipient(
     rec_cat_title: string,
     options: IPaginationOptions,
-    search: string,
+    search: string, req: any,
   ): Promise<Pagination<RecipientReg>> {
     const searchKeys = search;
     const queryBuilder = this.recipientRegRepository
@@ -100,13 +100,21 @@ export class RecipientService {
       .where('activity_recipient_register.rec_cat_title = :cats', {
         cats: rec_cat_title,
       })
+      .orWhere('activity_recipient_register.regs_volunteer = :regs_volunteer', {
+        regs_volunteer: req.user.userId,
+      })
+      .andWhere('activity_recipient_register.regs_volunteer = :regs_volunteer', {
+        regs_volunteer: "",
+      })
       .andWhere(
         new Brackets((qb) => {
           qb.where('activity_recipient_register.regs_fullname like :search', {
             search: '%' + searchKeys + '%',
           });
         }),
-      );
+      )
+      // .orderBy('activity_recipient_register.regs_id', 'DESC')
+    ;
 
     return await paginate<RecipientReg>(queryBuilder, options);
   }

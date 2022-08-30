@@ -50,11 +50,13 @@ export class RecipientController {
   @UseGuards(JwtAuthGuard)
   @Get(':rec_cat_title')
   async listsRecipient(
+    @Request() req: any,
     @Param('rec_cat_title') rec_cat_title: string,
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page = 1,
     @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit = 10,
     @Query('search') search = '',
   ) {
+    console.log(req.user.userId);
     limit = limit > 100 ? 100 : limit;
     return await this.recipientService.listsRecipient(
       rec_cat_title,
@@ -64,6 +66,7 @@ export class RecipientController {
         route: 'recipient/' + rec_cat_title,
       },
       search,
+      req,
     );
   }
 }

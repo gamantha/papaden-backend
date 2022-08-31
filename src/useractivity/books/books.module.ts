@@ -5,9 +5,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Book } from './entities/book.entity';
 import { Born } from '../../dashboard/config/born/entities/born.entity';
 import { permsAuth } from '../../auth/entities/auth.entity';
+import { Consultant } from "../../dashboard/consultant/entities/consultant.entity";
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Book, Born, permsAuth])],
+  imports: [TypeOrmModule.forFeature([Book, Born, permsAuth, Consultant])],
   controllers: [BooksController],
   providers: [BooksService],
 })

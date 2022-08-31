@@ -59,6 +59,7 @@ export class BooksController {
     @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit = 10,
     @Query('search') search = '',
   ) {
+    console.log("list books")
     limit = limit > 100 ? 100 : limit;
     const userData = Object.values(req.user)
     return await this.booksService.listsBooks(

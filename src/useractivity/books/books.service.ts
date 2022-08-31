@@ -12,6 +12,7 @@ import { Born } from '../../dashboard/config/born/entities/born.entity';
 import { permsAuth } from '../../auth/entities/auth.entity';
 import * as moment from 'moment';
 import { UpdateBookDto } from "./dto/update-book.dto";
+import { Consultant } from "../../dashboard/consultant/entities/consultant.entity";
 
 @Injectable()
 export class BooksService {
@@ -22,6 +23,8 @@ export class BooksService {
     private bornRepository: Repository<Born>,
     @InjectRepository(permsAuth)
     private permsAuthRepository: Repository<permsAuth>,
+    @InjectRepository(Consultant)
+    private consultantRepository: Repository<Consultant>,
   ) {}
 
   async createBook(createBookDto: CreateBookDto, req : any) {
@@ -107,6 +110,12 @@ export class BooksService {
     });
     console.log("USER DATA");
     console.log(userData[0]);
+    const consultant = await this.consultantRepository.findOne({
+      where: {
+        user_id: userData[0],
+      },
+    });
+
     const BooksIDs = new Date();
     const birth = new Date();
     const startDate = birth.setFullYear(
@@ -120,7 +129,14 @@ export class BooksService {
     const nd = new Date(endDate);
     const ndVals = moment(nd).format('YYYY:MM:DD HH:mm:ss');
     console.log(sdVals + ' s/d ' + ndVals);
-    const searchKeys = search;
+    const searchKeys = search
+    let consultantid = ""
+    // console.log("consultant id")
+    // console.log(consultant.consultant_id)
+    if (consultant !== null) {
+      consultantid = consultant.consultant_id
+    } else {
+    }
     const queryBuilder = this.bookRepository
       .createQueryBuilder('activity_book')
       .where('activity_book.born_date BETWEEN :stdate AND :endate', {
@@ -128,7 +144,7 @@ export class BooksService {
         endate: sdVals,
       })
       .andWhere('activity_book.consultant_id like :consultant_id', {
-        consultant_id: userData[0],
+        consultant_id: consultantid,
       })
       .andWhere(
         new Brackets((qb) => {

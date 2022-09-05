@@ -49,6 +49,17 @@ export class BooksController {
   }
 
 
+  @UseGuards(JwtAuthGuard)
+  @Get('getrating')
+  async getRating(
+    @Request() req: any,
+  ) {
+    console.log("get rating")
+    return await this.booksService.getRating(
+      req
+    );
+  }
+
 
   @UseGuards(JwtAuthGuard)
   @Get('')

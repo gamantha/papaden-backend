@@ -34,6 +34,9 @@ export class Consultant {
     nullable: true,
   })
   consultant_profil_url: string;
+  @Column()
+  consultant_rating: number;
+
 
   @AfterLoad()
   renameURL() {

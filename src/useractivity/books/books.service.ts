@@ -156,4 +156,42 @@ export class BooksService {
       .orderBy('activity_book.book_id', 'DESC');
     return paginate<Book>(queryBuilder, options);
   }
+
+
+  async getRating(req: any){
+    console.log(req)
+
+    // const books = await this.bookRepository.find({
+    //   where: {
+    //     book_id: updateBookDto.book_id
+    //   },
+    // });
+
+
+    const books = await this.bookRepository
+      .createQueryBuilder('activity_book').select('AVG(rating)')
+      .execute();
+      // .where('activity_book.born_date BETWEEN :stdate AND :endate', {
+      //   stdate: ndVals,
+      //   endate: sdVals,
+      // })
+      // .andWhere('activity_book.consultant_id like :consultant_id', {
+      //   consultant_id: consultantid,
+      // })
+      // .andWhere(
+      //   new Brackets((qb) => {
+      //     qb.where('activity_book.fullname like :search', {
+      //       search: '%' + searchKeys + '%',
+      //     });
+      //   }),
+      // )
+      // .orderBy('activity_book.book_id', 'DESC');
+    return {
+      statusCode: HttpStatus.OK,
+      message: 'GET RATING',
+      books: books,
+    };
+  }
+
+
 }

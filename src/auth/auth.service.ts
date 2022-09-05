@@ -262,19 +262,27 @@ export class AuthService {
         email: email,
       },
     });
-    if (userTemps.reg_token == token) {
-      await this.valTempUsers(userTemps);
-      // await this.tempsAuthRepository.update(userTemps.id, { status: true });
-      return {
-        statusCode: HttpStatus.OK,
-        message: 'VERIFICATION OK -> SUDAH DAPAT LOGIN'
-      };
+    if (userTemps !== null) {
+      if (userTemps.reg_token == token) {
+        await this.valTempUsers(userTemps);
+        // await this.tempsAuthRepository.update(userTemps.id, { status: true });
+        return {
+          statusCode: HttpStatus.OK,
+          message: 'VERIFICATION OK -> SUDAH DAPAT LOGIN'
+        };
+      } else {
+        return {
+          statusCode: HttpStatus.UNAUTHORIZED,
+          message: 'Wrong Token'
+        };
+      }
     } else {
       return {
-        statusCode: HttpStatus.UNAUTHORIZED,
-        message: 'Wrong Token'
+        statusCode: HttpStatus.NOT_FOUND,
+        message: 'email not found'
       };
     }
+
 
   }
 

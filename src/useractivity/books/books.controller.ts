@@ -49,6 +49,7 @@ export class BooksController {
   }
 
 
+
   @UseGuards(JwtAuthGuard)
   @Get('getrating')
   async getRating(

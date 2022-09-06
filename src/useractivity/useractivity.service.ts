@@ -11,8 +11,10 @@ import { profilImage } from './entities/useractivity.entity';
 import { UpdateUseractivityDto } from './dto/update-useractivity.dto';
 import { PasswordUseractivityDto } from './dto/password-useractivity.dto';
 import * as bcrypt from 'bcrypt';
-import { ProfilUseractivityDto } from "./dto/profil-useractivity.dto";
+import { ProfilUseractivityDto } from './dto/profil-useractivity.dto';
 import { MailService } from '../mail/mail.service';
+import { Book } from './books/entities/book.entity';
+import { RatingDto } from "./dto/rating.dto";
 
 @Injectable()
 export class UseractivityService {
@@ -29,6 +31,8 @@ export class UseractivityService {
     private recipientRepository: Repository<Recipient>,
     @InjectRepository(Consultant)
     private consultantRepository: Repository<Consultant>,
+    @InjectRepository(Book)
+    private bookRepository: Repository<Book>,
     @InjectRepository(profilImage)
     private profilImageRepository: Repository<profilImage>,
     private mailService: MailService,
@@ -104,10 +108,13 @@ export class UseractivityService {
       },
     });
     if (permUser.length === 1) {
-      console.log("user found")
+      console.log('user found');
       await this.permsAuthRepository.update(userData, updateUseractivityDto);
       console.log(permUser);
-      await this.mailService.sendRequestNotification(permUser[0], 'penerima bantuan');
+      await this.mailService.sendRequestNotification(
+        permUser[0],
+        'penerima bantuan',
+      );
       return {
         statusCode: HttpStatus.OK,
         message: 'data member telah diupdate',
@@ -121,8 +128,11 @@ export class UseractivityService {
   }
 
   // Update VOlunteer
-  async requestVolunteer(userData: any, updateUseractivityDto: UpdateUseractivityDto) {
-    console.log("request volunteer")
+  async requestVolunteer(
+    userData: any,
+    updateUseractivityDto: UpdateUseractivityDto,
+  ) {
+    console.log('request volunteer');
     const permUser = await this.permsAuthRepository.find({
       where: {
         id: userData,
@@ -142,7 +152,6 @@ export class UseractivityService {
     }
   }
 
-
   // Upload Profil Image
   async avatarUpload(id: string, file: Express.Multer.File) {
     const avatarData = await this.profilImageRepository.find({
@@ -161,7 +170,6 @@ export class UseractivityService {
         user_id: id,
       },
     });
-
 
     if (avatarData.length === 1) {
       await this.profilImageRepository
@@ -193,7 +201,6 @@ export class UseractivityService {
           })
           .where('user_id = :id', { id: id })
           .execute();
-
       }
 
       return {
@@ -230,13 +237,11 @@ export class UseractivityService {
           })
           .where('user_id = :id', { id: id })
           .execute();
-
       }
       return {
         statusCode: HttpStatus.OK,
         message: 'profil image user telah berhasil diupload',
       };
-
     }
   }
   // Get Profil Image
@@ -282,23 +287,38 @@ export class UseractivityService {
 
   // Get Consultant by user_id
   async findConsultant(vals: any) {
-    console.log("consulta");
+    console.log('consulta');
     console.log(vals);
+
     const consultantUser = await this.consultantRepository.find({
       where: {
         user_id: vals,
       },
     });
+    let score;
     if (consultantUser.length === 1) {
+      const rating = await this.bookRepository
+        .createQueryBuilder("activity_book")
+        .select("AVG(rating) avg")
+        .where("activity_book.status like \"closed\"")
+        .andWhere("activity_book.consultant_id like :consultant_id", {consultant_id: consultantUser[0].consultant_id})
+        .execute();
+      console.log(rating[0].avg);
+
+      score = parseFloat(rating[0].avg).toFixed(2);
+      consultantUser[0].consultant_rating = score;
+      // const jsonData = JSON.parse(rating)
+
+      // console.log(jsonData)
+      // consultantUser[0].consultant_rating =
       return consultantUser;
     } else {
       return {
         statusCode: HttpStatus.NOT_FOUND,
-        message: 'no user',
+        message: "no user"
       };
     }
   }
-
 
   // Get Consultants
   async findConsultants(options: IPaginationOptions, search: string) {
@@ -315,7 +335,6 @@ export class UseractivityService {
       );
     return await paginate<Consultant>(queryBuilder, options);
   }
-
 
   // Update Password
   async recoveryPassword(
@@ -357,4 +376,26 @@ export class UseractivityService {
       };
     }
   }
+
+  async giveRating(body: any){
+    // console.log(ratingDto)
+    // console.log(req)
+    console.log(body.book_id)
+    // console.log(req.user.userId);
+    const rating = await this.bookRepository
+      .createQueryBuilder("activity_book")
+      .update("activity_book")
+      .set({rating: body.rating})
+      .where("activity_book.book_id like :book_id", {book_id: body.book_id })
+      .andWhere("activity_book.id like :id", {id: body.user_id })
+      .execute();
+    console.log(rating)
+    return {
+      statusCode: HttpStatus.OK,
+      message: rating,
+    };
+  }
+
+
+
 }

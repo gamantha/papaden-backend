@@ -19,6 +19,7 @@ import { ApiBody, ApiConsumes } from '@nestjs/swagger';
 import LocalFilesInterceptor from './local.interceptor';
 import { UpdateUseractivityDto } from './dto/update-useractivity.dto';
 import { PasswordUseractivityDto } from './dto/password-useractivity.dto';
+import { RatingDto } from './dto/rating.dto';
 
 @Controller('useractivity')
 export class UseractivityController {
@@ -152,9 +153,10 @@ export class UseractivityController {
     console.log("get consultant");
     console.log(req.user);
   const userData = Object.values(req.user);
-  return await this.useractivityService.findConsultant(
+  const consultant = await this.useractivityService.findConsultant(
     userData
   );
+  return consultant
   }
 
   // Get Consultants list
@@ -176,5 +178,17 @@ export class UseractivityController {
     );
   }
 
+  //give rating require book_id, user_id (from jwt), rating
+  // @UseGuards(JwtAuthGuard)
+  @Post('giverating')
+  async giveRating(
+    @Body() body:any,
+  ) {
+    console.log("give rating")
+    console.log(body)
+    return await this.useractivityService.giveRating(
+      body
+    );
+  }
 
 }

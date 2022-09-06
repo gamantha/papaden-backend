@@ -13,7 +13,7 @@ import { LocalService } from './local/local.service';
 import { profilImage } from './entities/useractivity.entity';
 import { ConfigModule } from '@nestjs/config';
 import { MailModule } from '../mail/mail.module';
-
+import { Book } from './books/entities/book.entity';
 @Module({
   imports: [
     TypeOrmModule.forFeature([
@@ -24,6 +24,7 @@ import { MailModule } from '../mail/mail.module';
       Recipient,
       Consultant,
       profilImage,
+      Book,
     ]),
     ConfigModule,
     BooksModule,

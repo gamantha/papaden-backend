@@ -158,6 +158,7 @@ export class BooksService {
   }
 
 
+
   async getRating(req: any){
     console.log(req)
 
@@ -169,7 +170,7 @@ export class BooksService {
 
 
     const books = await this.bookRepository
-      .createQueryBuilder('activity_book').select('AVG(rating)')
+      .createQueryBuilder('activity_book').select('AVG(rating) as rating')
       .execute();
       // .where('activity_book.born_date BETWEEN :stdate AND :endate', {
       //   stdate: ndVals,

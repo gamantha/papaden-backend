@@ -34,6 +34,9 @@ export class Book {
   @Column({ default: 0 })
   @IsOptional()
   rating: number;
+  @Column()
+  @IsOptional()
+  comment: string;
   @CreateDateColumn()
   book_created_on: Date;
   @UpdateDateColumn()

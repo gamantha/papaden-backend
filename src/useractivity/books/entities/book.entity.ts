@@ -38,4 +38,7 @@ export class Book {
   @Column({ default: 0 })
   @IsOptional()
   rating: number;
+  @Column()
+  @IsOptional()
+  comment: string;
 }

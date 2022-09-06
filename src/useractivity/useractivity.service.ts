@@ -385,7 +385,7 @@ export class UseractivityService {
     const rating = await this.bookRepository
       .createQueryBuilder("activity_book")
       .update("activity_book")
-      .set({rating: body.rating})
+      .set({rating: body.rating, comment: body.comment})
       .where("activity_book.book_id like :book_id", {book_id: body.book_id })
       .andWhere("activity_book.id like :id", {id: body.user_id })
       .execute();

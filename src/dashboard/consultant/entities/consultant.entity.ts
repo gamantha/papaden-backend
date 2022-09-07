@@ -34,7 +34,7 @@ export class Consultant {
     nullable: true,
   })
   consultant_profil_url: string;
-  @Column()
+  @Column({ default: 0 })
   consultant_rating: number;
 
 

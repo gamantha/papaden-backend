@@ -100,11 +100,11 @@ export class RecipientService {
       .where('activity_recipient_register.rec_cat_title = :cats', {
         cats: rec_cat_title,
       })
-      .orWhere('activity_recipient_register.regs_volunteer = :regs_volunteer', {
+      // .orWhere('activity_recipient_register.regs_volunteer = :regs_volunteer', {
+      //   regs_volunteer: req.user.userId,
+      // })
+      .andWhere('(activity_recipient_register.regs_volunteer = :regs_volunteer OR activity_recipient_register.regs_volunteer = "")', {
         regs_volunteer: req.user.userId,
-      })
-      .andWhere('activity_recipient_register.regs_volunteer = :regs_volunteer', {
-        regs_volunteer: "",
       })
       .andWhere(
         new Brackets((qb) => {

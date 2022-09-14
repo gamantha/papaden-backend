@@ -13,6 +13,7 @@ import crypto from "crypto";
 import cryptoconst from "crypto";
 import { Transform } from "class-transformer";
 import { profilImage } from "../../useractivity/entities/useractivity.entity";
+import { Consultant } from "../../dashboard/consultant/entities/consultant.entity";
 
 @Entity('temps_auth')
 export class tempsAuth {
@@ -67,8 +68,8 @@ export class tempsAuth {
 
 @Entity('perms_auth')
 export class permsAuth {
-  @PrimaryGeneratedColumn()
-  @Generated('uuid')
+  @PrimaryGeneratedColumn('uuid')
+  // @Generated('uuid')
   id: string;
   @Column()
   fullname: string;
@@ -111,6 +112,8 @@ export class permsAuth {
   // profil_image: profilImage
   // @OneToMany(() => profilImage, (profile_image) => profile_image.id)
 
+  @OneToOne(() => Consultant, (consultant) => consultant.permsAuth) // specify inverse side as a second parameter
+  consultant: Consultant
 
   // @OneToMany(type => Photo, photo => photo.user)
   // photos: Photo[];

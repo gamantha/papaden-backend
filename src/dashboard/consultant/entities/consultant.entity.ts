@@ -10,11 +10,12 @@ import {
   PrimaryGeneratedColumn
 } from "typeorm";
 import { profilImage, Useractivity } from "../../../useractivity/entities/useractivity.entity";
+import { permsAuth } from "../../../auth/entities/auth.entity";
 
 @Entity('admin_consultant')
 export class Consultant {
-  @PrimaryGeneratedColumn()
-  @Generated('uuid')
+  @PrimaryGeneratedColumn('uuid')
+  // @Generated('uuid')
   consultant_id: string;
   @Column({
     nullable:true, unique: true
@@ -37,6 +38,9 @@ export class Consultant {
   @Column({ default: 0 })
   consultant_rating: number;
 
+  @OneToOne(() => permsAuth, (permsAuth) => permsAuth.consultant) // specify inverse side as a second parameter
+  @JoinColumn({name:'user_id'})
+  permsAuth: permsAuth
 
   @AfterLoad()
   renameURL() {

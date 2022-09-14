@@ -168,7 +168,7 @@ export class UseractivityController {
     @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit = 10,
   ) {
     limit = limit > 100 ? 100 : limit;
-    return await this.useractivityService.findConsultants(
+    const res = await this.useractivityService.findConsultants(
       {
         page,
         limit,
@@ -176,6 +176,8 @@ export class UseractivityController {
       },
       search,
     );
+    console.log(res);
+    return res;
   }
 
   //give rating require book_id, user_id (from jwt), rating

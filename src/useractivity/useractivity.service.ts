@@ -325,14 +325,17 @@ export class UseractivityService {
     const searchKeys = search;
     const queryBuilder = this.consultantRepository
       .createQueryBuilder('admin_consultant')
+      .leftJoinAndSelect('admin_consultant.permsAuth', 'perms_auth')
+      .where('perms_auth.isvolunteer = "true"')
       // .leftJoinAndSelect("admin_consultant.profilimage", "admin_consultant")
-      .where(
+      .andWhere(
         new Brackets((qb) => {
           qb.where('admin_consultant.consultant_fullname like :search', {
             search: '%' + searchKeys + '%',
           });
         }),
       );
+
     return await paginate<Consultant>(queryBuilder, options);
   }
 

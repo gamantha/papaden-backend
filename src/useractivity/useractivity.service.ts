@@ -287,14 +287,27 @@ export class UseractivityService {
 
   // Get Consultant by user_id
   async findConsultant(vals: any) {
-    console.log('consulta');
+    console.log('find consultant');
     console.log(vals);
 
-    const consultantUser = await this.consultantRepository.find({
-      where: {
-        user_id: vals,
-      },
-    });
+    // const consultantUser = await this.consultantRepository.find({
+    //   where: {
+    //     user_id: vals,
+    //   },
+    // });
+
+    const consultantUser = await this.consultantRepository
+      .createQueryBuilder('admin_consultant')
+      .leftJoinAndSelect('admin_consultant.permsAuth', 'perms_auth')
+      .where('perms_auth.isvolunteer = "true"')
+      .andWhere('admin_consultant.user_id = :userid',{userid : vals}).getMany();
+
+    console.log("+++++++++++")
+
+    console.log(consultantUser);
+    // console.log(queryBuilder);
+
+
     let score;
     if (consultantUser.length === 1) {
       const rating = await this.bookRepository

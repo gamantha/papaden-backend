@@ -13,6 +13,7 @@ import { permsAuth } from '../../auth/entities/auth.entity';
 import * as moment from 'moment';
 import { UpdateBookDto } from "./dto/update-book.dto";
 import { Consultant } from "../../dashboard/consultant/entities/consultant.entity";
+import { MailService } from '../../mail/mail.service';
 
 @Injectable()
 export class BooksService {
@@ -25,14 +26,18 @@ export class BooksService {
     private permsAuthRepository: Repository<permsAuth>,
     @InjectRepository(Consultant)
     private consultantRepository: Repository<Consultant>,
+    private mailService: MailService,
   ) {}
 
   async createBook(createBookDto: CreateBookDto, req : any) {
     const postBooks = await this.bookRepository.create(createBookDto);
     console.log(createBookDto.book_date);
 
-    await
+    console.log(postBooks.consultant.permsAuth.email);
+    console.log(postBooks.permsAuth.email);
     await this.bookRepository.save(postBooks);
+    // await this.mailService.sendBookingNotification();
+
     return {
       statusCode: HttpStatus.OK,
       message: 'permintaan teman bicara telah sukses terkirim',

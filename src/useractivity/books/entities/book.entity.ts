@@ -1,11 +1,15 @@
 import {
   Column,
   CreateDateColumn,
-  Entity,
+  Entity, JoinColumn, OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
+  ManyToOne,
 } from 'typeorm';
 import { IsOptional } from "class-validator";
+import { Consultant } from '../../../dashboard/consultant/entities/consultant.entity';
+import {permsAuth} from "../../../auth/entities/auth.entity";
+
 
 @Entity('activity_book')
 export class Book {
@@ -41,4 +45,18 @@ export class Book {
   @Column({ default: "" })
   @IsOptional()
   comment: string;
+
+  @ManyToOne(() => Consultant, (Consultant) => Consultant.books)
+  consultant: Consultant
+
+  @ManyToOne(() => permsAuth, (permsAuth) => permsAuth.books)
+  permsAuth: permsAuth
+
+
+
+
+  // @OneToOne(() => permsAuth, (permsAuth) => permsAuth.consultant) // specify inverse side as a second parameter
+  // @JoinColumn({name:'user_id'})
+  // permsAuth: permsAuth
+  //
 }

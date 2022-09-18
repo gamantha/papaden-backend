@@ -11,6 +11,7 @@ import {
 } from "typeorm";
 import { profilImage, Useractivity } from "../../../useractivity/entities/useractivity.entity";
 import { permsAuth } from "../../../auth/entities/auth.entity";
+import { Book } from '../../../useractivity/books/entities/book.entity';
 
 @Entity('admin_consultant')
 export class Consultant {
@@ -50,6 +51,10 @@ export class Consultant {
     }
 
   }
+
+  @OneToMany(type => Book, Book => Book.consultant)
+  books: Book[];
+
 
   // @ManyToOne(type => profilImage, profilimage => profilimage.id)
   // @JoinColumn()

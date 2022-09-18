@@ -41,6 +41,33 @@ export class MailService {
 
 
 
+  // async sendBookingNotification(permUser: permsAuth, msg : string) {
+  //   await this.mailerService.sendMail({
+  //     to: permUser.email,
+  //     from: '"Papaden CS" <cs@papaden.org>',
+  //     subject: 'Booking Notification',
+  //     template: './booking_notification',
+  //     context: {
+  //       name: permUser.fullname,
+  //       msg : msg
+  //     },
+  //   });
+  //
+  //
+  //   await this.mailerService.sendMail({
+  //     to: '"Papaden CS" <cs@papaden.org>',
+  //     from: '"Papaden CS" <cs@papaden.org>',
+  //     subject: 'Booking notification',
+  //     template: './booking_notification',
+  //     context: {
+  //       name: permUser.fullname,
+  //       msg : msg
+  //     },
+  //   });
+  //
+  //
+  // }
+
   async sendRequestNotification(permUser: permsAuth, msg : string) {
     await this.mailerService.sendMail({
       to: permUser.email,

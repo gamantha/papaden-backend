@@ -23,7 +23,7 @@ export class BooksController {
   @UseGuards(JwtAuthGuard)
   @Post('')
   async createBook(@Request() req: any,@Body() createBookDto: CreateBookDto) {
-    console.log("Create book");
+    console.log("Create book - /useractivity/books");
     console.log(createBookDto.book_date);
     return await this.booksService.createBook(createBookDto, req);
   }

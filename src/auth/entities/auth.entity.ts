@@ -14,6 +14,7 @@ import cryptoconst from "crypto";
 import { Transform } from "class-transformer";
 import { profilImage } from "../../useractivity/entities/useractivity.entity";
 import { Consultant } from "../../dashboard/consultant/entities/consultant.entity";
+import {Book} from "../../useractivity/books/entities/book.entity";
 
 @Entity('temps_auth')
 export class tempsAuth {
@@ -113,10 +114,11 @@ export class permsAuth {
   // @OneToMany(() => profilImage, (profile_image) => profile_image.id)
 
   @OneToOne(() => Consultant, (consultant) => consultant.permsAuth) // specify inverse side as a second parameter
-  consultant: Consultant
+  consultant: Consultant;
 
-  // @OneToMany(type => Photo, photo => photo.user)
-  // photos: Photo[];
+  @OneToMany(type => Book, Book => Book.permsAuth)
+  books: Book[];
+
   @BeforeInsert()
   @BeforeUpdate()
   async hashPassword() {

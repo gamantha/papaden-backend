@@ -12,6 +12,7 @@ import { PugAdapter } from '@nestjs-modules/mailer/dist/adapters/pug.adapter';
 import { MailModule } from './mail/mail.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { DeleterequestModule } from './deleterequest/deleterequest.module';
 
 
 
@@ -33,7 +34,7 @@ const ENV = process.env.NODE_ENV;
       password: process.env.DB_PASSWORD,
       database: process.env.DB_SCHEMA,
       entities: [__dirname + '/../**/*.entity.js'],
-      synchronize: true,
+      synchronize: false,
       logging: true,
     }),
     ServeStaticModule.forRoot({
@@ -56,6 +57,7 @@ const ENV = process.env.NODE_ENV;
       },
     }),
     MailModule,
+    DeleterequestModule,
   ],
   controllers: [AppController],
   providers: [AppService],

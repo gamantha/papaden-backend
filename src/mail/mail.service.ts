@@ -2,10 +2,29 @@ import { Injectable } from '@nestjs/common';
 import { MailerService } from '@nestjs-modules/mailer';
 import { permsAuth, tempsAuth } from '../auth/entities/auth.entity';
 import { TempsAuthDto } from '../auth/dto/temps-auth.dto';
+import { CreateDeleterequestDto } from '../deleterequest/dto/create-deleterequest.dto';
 
 @Injectable()
 export class MailService {
   constructor(private mailerService: MailerService) {}
+  async deleteRequestConfirmation(
+    createDeleterequestDto: CreateDeleterequestDto,
+  ) {
+    // console.log(createDeleterequestDto.reg_token);
+    const url = `https://api-devs.papaden.org/deleterequest/confirm?email=${createDeleterequestDto.email}&token=${createDeleterequestDto.reg_token}`;
+    // console.log(url);
+    await this.mailerService.sendMail({
+      to: createDeleterequestDto.email,
+      from: '"Papaden CS" <cs@papaden.org>',
+      subject: 'Konfirmasi penghapusan Akun Aplikasi Papaden',
+      template: './deleteconfirmation',
+      context: {
+        name: createDeleterequestDto.email,
+        url,
+      },
+    });
+  }
+
 
   async sendUserConfirmation(tempsAuthDto: TempsAuthDto) {
     console.log(tempsAuthDto.reg_token);

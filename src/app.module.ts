@@ -34,7 +34,7 @@ const ENV = process.env.NODE_ENV;
       password: process.env.DB_PASSWORD,
       database: process.env.DB_SCHEMA,
       entities: [__dirname + '/../**/*.entity.js'],
-      synchronize: false,
+      synchronize: true,
       logging: true,
     }),
     ServeStaticModule.forRoot({

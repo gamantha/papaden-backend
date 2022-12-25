@@ -31,12 +31,29 @@ export class DeleterequestService {
     const postDeleterequest = await this.deleterequestRepository.save(
       createDeleterequestDto,
     );
-    await this.mailService.deleteRequestConfirmation(postDeleterequest);
-    return {
-      statusCode: HttpStatus.OK,
-      message: 'Silahkan periksa mailbox anda untuk verifikasi',
-      data: postDeleterequest,
-    };
+    const permAuth = await this.permsAuthRepository.findOne({
+      where: {
+        email: createDeleterequestDto.email,
+      },
+    });
+
+    if (permAuth === null) {
+      console.log('no user exist');
+      return {
+        statusCode: HttpStatus.NOT_FOUND,
+        message: createDeleterequestDto.email + ' NOT FOUND',
+      };
+    } else {
+      console.log('create delete request');
+      await this.mailService.deleteRequestConfirmation(postDeleterequest);
+      return {
+        statusCode: HttpStatus.OK,
+        message: 'Silahkan periksa mailbox anda untuk verifikasi',
+        data: postDeleterequest,
+      };
+    }
+
+
     // return 'This action adds a new deleterequest';
   }
 
@@ -66,7 +83,7 @@ export class DeleterequestService {
   };
 
 
-  async find(email: string, token: string) {
+  async find(email: string) {
     const deleteRequest = await this.deleterequestRepository.findOne({
       where: {
         email: email,
@@ -79,8 +96,23 @@ export class DeleterequestService {
       },
     });
 
+    if (permAuth === null) {
+      console.log('no user exist');
+      return {
+        statusCode: HttpStatus.NOT_FOUND,
+        message: email + ' NOT FOUND',
+      };
+    }
 
-    if (deleteRequest.reg_token == token) {
+    if (deleteRequest === null) {
+      return {
+        statusCode: HttpStatus.NOT_FOUND,
+        message: 'NO delete request found',
+      };
+    }
+
+
+    if (deleteRequest.reg_token == deleteRequest.reg_token) {
       deleteRequest.status = 'deleted';
       permAuth.email = permAuth.email + '-' + Date.now();
       permAuth.status = false;
@@ -92,16 +124,21 @@ export class DeleterequestService {
         permAuth.id,
         permAuth,
       );
-      return permAuth.email + ' has been deleted';
+      // return permAuth.email + ' has been deleted';
+      return {
+        statusCode: HttpStatus.OK,
+        message: permAuth.email + ' has been deleted',
+      };
+
     } else {
       console.log('NOT MATCH');
-      return permAuth.email + ' has NOT been deleted : TOKEN INVALID';
+      // return permAuth.email + ' has NOT been deleted : TOKEN INVALID';
+      return {
+        statusCode: HttpStatus.UNAUTHORIZED,
+        message: email + ' has NOT been deleted : TOKEN INVALID',
+      };
     }
-    // console.log(email);
-    // console.log(deleteRequest.email);
 
-
-    // return `This action returns a #${email} deleterequest`;
   }
 
   update(id: number, updateDeleterequestDto: UpdateDeleterequestDto) {
@@ -109,6 +146,36 @@ export class DeleterequestService {
     return `This action updates a #${id} deleterequest`;
   }
 
+  async resend(id: number, updateDeleterequestDto: UpdateDeleterequestDto) {
+    console.log('resend');
+    updateDeleterequestDto.reg_token = this.get_reg_token();
+    const updateRequest = await this.deleterequestRepository.update(
+      id,
+      updateDeleterequestDto,
+    );
+    const permAuth = await this.permsAuthRepository.findOne({
+      where: {
+        email: updateDeleterequestDto.email,
+      },
+    });
+
+    // await this.mailService.deleteRequestResendConfirmation(updateRequest);
+    if (permAuth === null) {
+      console.log('no user exist');
+      return {
+        statusCode: HttpStatus.NOT_FOUND,
+        message: updateDeleterequestDto.email + ' NOT FOUND',
+      };
+    } else {
+      return {
+        statusCode: HttpStatus.OK,
+        message: 'Silahkan periksa mailbox anda untuk verifikasi',
+        data: updateRequest,
+      };
+    }
+
+
+  }
   remove(id: number) {
     return `This action removes a #${id} deleterequest`;
   }
@@ -120,14 +187,7 @@ export class DeleterequestService {
       },
     });
 
-    if (deleteRequest === null) {
-      console.log('delte request is null');
-      return true;
-    } else {
-      console.log('delete request IS NOT EMPTY');
-      return false;
-    }
-
+  return deleteRequest;
     // if (deleteRequest.length === 0) {}
 
 

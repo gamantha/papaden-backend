@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Request, Query } from "@nestjs/common";
+import { Controller, Get, Post, Body, Patch, Param, Delete, Request, Query, HttpStatus } from "@nestjs/common";
 import { DeleterequestService } from './deleterequest.service';
 import { CreateDeleterequestDto } from './dto/create-deleterequest.dto';
 import { UpdateDeleterequestDto } from './dto/update-deleterequest.dto';
@@ -10,23 +10,30 @@ export class DeleterequestController {
 
   @Post()
   async create(@Body() createDeleterequestDto: CreateDeleterequestDto, @Request() req: any) {
-    // const delReq = await this.deleterequestService.getRequest(
-    //   createDeleterequestDto,
-    //   req, RENO
-    // );
-    const ifExist = this.deleterequestService.findByEmail(
-req.email
+
+     let ifExist = await this.deleterequestService.findByEmail(
+       createDeleterequestDto.email
     );
-    console.log('comparing');
-    console.log(ifExist);
-if (ifExist) {
-  console.log('exist');
-return 'EXIST';
-} else {
-      console.log('create DELETE REQUEST');
-      this.deleterequestService.create(createDeleterequestDto, req);
-      return 'created';
-}
+      // console.log(ifExist);
+    console.log(createDeleterequestDto.email);
+      if (ifExist === null) {
+        console.log('create DELETE REQUEST');
+        this.deleterequestService.create(createDeleterequestDto, req);
+        return {
+          statusCode: HttpStatus.OK,
+          message: 'Delete request created',
+        };
+
+      } else {
+        this.deleterequestService.resend(ifExist.id,createDeleterequestDto);
+        console.log('exist');
+        return {
+          statusCode: HttpStatus.OK,
+          message: 'delete request resent',
+        };
+      }
+    // });
+
 
   }
 
@@ -37,8 +44,9 @@ return 'EXIST';
   ) {
     const delUser = this.deleterequestService.find(
       `${query.email}`,
-      `${query.token}`,
+      // `${query.token}`,
     );
+
 
     console.log('confirm deletion');
     // console.log(`${query.token}`);

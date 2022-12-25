@@ -3,6 +3,7 @@ import { MailerService } from '@nestjs-modules/mailer';
 import { permsAuth, tempsAuth } from '../auth/entities/auth.entity';
 import { TempsAuthDto } from '../auth/dto/temps-auth.dto';
 import { CreateDeleterequestDto } from '../deleterequest/dto/create-deleterequest.dto';
+import { UpdateDeleterequestDto } from "../deleterequest/dto/update-deleterequest.dto";
 
 @Injectable()
 export class MailService {
@@ -24,6 +25,23 @@ export class MailService {
       },
     });
   }
+
+  async deleteRequestResendConfirmation(
+    updateDeleterequestDto: UpdateDeleterequestDto,
+  ) {
+    const url = `https://api-devs.papaden.org/deleterequest/confirm?email=${updateDeleterequestDto.email}&token=${updateDeleterequestDto.reg_token}`;
+    await this.mailerService.sendMail({
+      to: updateDeleterequestDto.email,
+      from: '"Papaden CS" <cs@papaden.org>',
+      subject: 'Konfirmasi penghapusan Akun Aplikasi Papaden',
+      template: './deleteconfirmation',
+      context: {
+        name: updateDeleterequestDto.email,
+        url,
+      },
+    });
+  }
+
 
 
   async sendUserConfirmation(tempsAuthDto: TempsAuthDto) {

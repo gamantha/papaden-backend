@@ -28,9 +28,7 @@ export class DeleterequestService {
 
   async create(createDeleterequestDto: CreateDeleterequestDto, req: any) {
     createDeleterequestDto.reg_token = this.get_reg_token();
-    const postDeleterequest = await this.deleterequestRepository.save(
-      createDeleterequestDto,
-    );
+
     const permAuth = await this.permsAuthRepository.findOne({
       where: {
         email: createDeleterequestDto.email,
@@ -45,6 +43,9 @@ export class DeleterequestService {
       };
     } else {
       console.log('create delete request');
+      const postDeleterequest = await this.deleterequestRepository.save(
+        createDeleterequestDto,
+      );
       await this.mailService.deleteRequestConfirmation(postDeleterequest);
       return {
         statusCode: HttpStatus.OK,

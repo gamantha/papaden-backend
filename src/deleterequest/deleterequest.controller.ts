@@ -14,7 +14,7 @@ export class DeleterequestController {
      let ifExist = await this.deleterequestService.findByEmail(
        createDeleterequestDto.email
     );
-      // console.log(ifExist);
+
     console.log(createDeleterequestDto.email);
       if (ifExist === null) {
         console.log('create DELETE REQUEST');

@@ -36,7 +36,7 @@ export class DeleterequestService {
     });
 
     if (permAuth === null) {
-      console.log('no user exist');
+      console.log('no user exist - ');
       return {
         statusCode: HttpStatus.NOT_FOUND,
         message: createDeleterequestDto.email + ' NOT FOUND',

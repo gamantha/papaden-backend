@@ -18,19 +18,19 @@ export class DeleterequestController {
     console.log(createDeleterequestDto.email);
       if (ifExist === null) {
         console.log('create DELETE REQUEST');
-        this.deleterequestService.create(createDeleterequestDto, req);
-        return {
-          statusCode: HttpStatus.OK,
-          message: 'Delete request created',
-        };
+        return this.deleterequestService.create(createDeleterequestDto, req);
+        // return {
+        //   statusCode: HttpStatus.OK,
+        //   message: 'Delete request created',
+        // };
 
       } else {
-        this.deleterequestService.resend(ifExist.id,createDeleterequestDto);
-        console.log('exist');
-        return {
-          statusCode: HttpStatus.OK,
-          message: 'delete request resent',
-        };
+        return this.deleterequestService.resend(ifExist.id,createDeleterequestDto);
+        // console.log('exist');
+        // return {
+        //   statusCode: HttpStatus.OK,
+        //   message: 'delete request resent',
+        // };
       }
     // });
 
